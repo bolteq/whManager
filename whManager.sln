@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.28010.2041
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "whManagerAPI", "whManagerAPI\whManagerAPI.csproj", "{40EB2331-F356-45CB-BE2B-AE156BE6436B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "whManagerAPI.Tests", "whManagerAPI.Tests\whManagerAPI.Tests.csproj", "{92648704-68AD-4D19-8C29-2E89895F7F20}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{40EB2331-F356-45CB-BE2B-AE156BE6436B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{40EB2331-F356-45CB-BE2B-AE156BE6436B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{40EB2331-F356-45CB-BE2B-AE156BE6436B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{40EB2331-F356-45CB-BE2B-AE156BE6436B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{92648704-68AD-4D19-8C29-2E89895F7F20}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{92648704-68AD-4D19-8C29-2E89895F7F20}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{92648704-68AD-4D19-8C29-2E89895F7F20}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{92648704-68AD-4D19-8C29-2E89895F7F20}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {953AC413-0B71-45A6-B63D-D6D688644EFB}
+	EndGlobalSection
+EndGlobal
