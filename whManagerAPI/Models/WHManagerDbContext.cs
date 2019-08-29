@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
+using whManagerLIB.Models;
 
 namespace whManagerAPI.Models
 {
@@ -12,6 +13,7 @@ namespace whManagerAPI.Models
             : base(options)
         { }
 
-        public DbSet<WarehouseModel> Warehouses { get; set; }
+        public DbSet<Warehouse> Warehouses { get; set; }
+        public DbSet<Worker> Workers { get; set; }
     }
 }

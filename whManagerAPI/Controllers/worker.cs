@@ -6,61 +6,62 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using whManagerAPI.Models;
+using whManagerLIB.Models;
 
 namespace whManagerAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class WarehouseModelsController : ControllerBase
+    public class worker : ControllerBase
     {
         private readonly WHManagerDbContext _context;
 
-        public WarehouseModelsController(WHManagerDbContext context)
+        public worker(WHManagerDbContext context)
         {
             _context = context;
         }
 
-        // GET: api/WarehouseModels
+        // GET: api/worker
         [HttpGet]
-        public IEnumerable<WarehouseModel> GetWarehouses()
+        public IEnumerable<Worker> GetWorkers()
         {
-            return _context.Warehouses;
+            return _context.Workers;
         }
 
-        // GET: api/WarehouseModels/5
+        // GET: api/worker/5
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetWarehouseModel([FromRoute] int id)
+        public async Task<IActionResult> GetWorker([FromRoute] int id)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            var warehouseModel = await _context.Warehouses.FindAsync(id);
+            var worker = await _context.Workers.FindAsync(id);
 
-            if (warehouseModel == null)
+            if (worker == null)
             {
                 return NotFound();
             }
 
-            return Ok(warehouseModel);
+            return Ok(worker);
         }
 
-        // PUT: api/WarehouseModels/5
+        // PUT: api/worker/5
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutWarehouseModel([FromRoute] int id, [FromBody] WarehouseModel warehouseModel)
+        public async Task<IActionResult> PutWorker([FromRoute] int id, [FromBody] Worker worker)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            if (id != warehouseModel.warehouseId)
+            if (id != worker.workerId)
             {
                 return BadRequest();
             }
 
-            _context.Entry(warehouseModel).State = EntityState.Modified;
+            _context.Entry(worker).State = EntityState.Modified;
 
             try
             {
@@ -68,7 +69,7 @@ namespace whManagerAPI.Controllers
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!WarehouseModelExists(id))
+                if (!WorkerExists(id))
                 {
                     return NotFound();
                 }
@@ -81,45 +82,45 @@ namespace whManagerAPI.Controllers
             return NoContent();
         }
 
-        // POST: api/WarehouseModels
+        // POST: api/worker
         [HttpPost]
-        public async Task<IActionResult> PostWarehouseModel([FromBody] WarehouseModel warehouseModel)
+        public async Task<IActionResult> PostWorker([FromBody] Worker worker)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            _context.Warehouses.Add(warehouseModel);
+            _context.Workers.Add(worker);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetWarehouseModel", new { id = warehouseModel.warehouseId }, warehouseModel);
+            return CreatedAtAction("GetWorker", new { id = worker.workerId }, worker);
         }
 
-        // DELETE: api/WarehouseModels/5
+        // DELETE: api/worker/5
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteWarehouseModel([FromRoute] int id)
+        public async Task<IActionResult> DeleteWorker([FromRoute] int id)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            var warehouseModel = await _context.Warehouses.FindAsync(id);
-            if (warehouseModel == null)
+            var worker = await _context.Workers.FindAsync(id);
+            if (worker == null)
             {
                 return NotFound();
             }
 
-            _context.Warehouses.Remove(warehouseModel);
+            _context.Workers.Remove(worker);
             await _context.SaveChangesAsync();
 
-            return Ok(warehouseModel);
+            return Ok(worker);
         }
 
-        private bool WarehouseModelExists(int id)
+        private bool WorkerExists(int id)
         {
-            return _context.Warehouses.Any(e => e.warehouseId == id);
+            return _context.Workers.Any(e => e.workerId == id);
         }
     }
 }
