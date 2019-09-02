@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using whManagerAPI.Models;
@@ -9,9 +10,10 @@ using whManagerAPI.Models;
 namespace whManagerAPI.Migrations
 {
     [DbContext(typeof(WHManagerDbContext))]
-    partial class WHManagerDbContextModelSnapshot : ModelSnapshot
+    [Migration("20190902180802_Date")]
+    partial class Date
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -35,7 +37,7 @@ namespace whManagerAPI.Migrations
 
             modelBuilder.Entity("whManagerLIB.Models.Worker", b =>
                 {
-                    b.Property<int>("WorkerId")
+                    b.Property<int>("workerId")
                         .ValueGeneratedOnAdd();
 
                     b.Property<string>("EmailAddress");
@@ -46,7 +48,7 @@ namespace whManagerAPI.Migrations
 
                     b.Property<string>("Surname");
 
-                    b.HasKey("WorkerId");
+                    b.HasKey("workerId");
 
                     b.ToTable("Workers");
                 });
@@ -57,25 +59,25 @@ namespace whManagerAPI.Migrations
                         .ValueGeneratedOnAdd();
 
                     b.Property<DateTime>("TimeEnd")
-                        .HasColumnType("TIMESTAMP");
+                        .HasColumnType("Date");
 
                     b.Property<DateTime>("TimeStart")
-                        .HasColumnType("TIMESTAMP");
+                        .HasColumnType("Date");
 
-                    b.Property<int>("WorkerId");
+                    b.Property<int>("workerId");
 
                     b.HasKey("scheduleId");
 
-                    b.HasIndex("WorkerId");
+                    b.HasIndex("workerId");
 
                     b.ToTable("WorkSchedules");
                 });
 
             modelBuilder.Entity("whManagerLIB.Models.WorkSchedule", b =>
                 {
-                    b.HasOne("whManagerLIB.Models.Worker", "Worker")
+                    b.HasOne("whManagerLIB.Models.Worker", "WorkerId")
                         .WithMany("WorkSchedules")
-                        .HasForeignKey("WorkerId")
+                        .HasForeignKey("workerId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 #pragma warning restore 612, 618

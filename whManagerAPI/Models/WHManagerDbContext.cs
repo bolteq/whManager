@@ -15,5 +15,6 @@ namespace whManagerAPI.Models
 
         public DbSet<Warehouse> Warehouses { get; set; }
         public DbSet<Worker> Workers { get; set; }
+        public DbSet<WorkSchedule> WorkSchedules { get; set; }
     }
 }

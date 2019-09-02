@@ -14,6 +14,7 @@ namespace whManagerUI.Pages
         public IList<Worker> Workers { get; set; }
         private WorkerApi workerApi;
         private readonly HttpClient _httpClient;
+        public WorkSchedule WorkSchedule { get; set; }
 
         public IndexModel(HttpClient httpClient)
         {

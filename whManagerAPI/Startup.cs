@@ -28,6 +28,9 @@ namespace whManagerAPI
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+            services.AddMvc().AddJsonOptions(
+                options => options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
+                );
             services.AddDbContext<WHManagerDbContext>(options => options.UseNpgsql(Configuration.GetConnectionString("Dev")));
         }
 

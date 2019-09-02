@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using whManagerAPI.Models;
@@ -9,9 +10,10 @@ using whManagerAPI.Models;
 namespace whManagerAPI.Migrations
 {
     [DbContext(typeof(WHManagerDbContext))]
-    partial class WHManagerDbContextModelSnapshot : ModelSnapshot
+    [Migration("20190902184415_Fix")]
+    partial class Fix
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -57,10 +59,10 @@ namespace whManagerAPI.Migrations
                         .ValueGeneratedOnAdd();
 
                     b.Property<DateTime>("TimeEnd")
-                        .HasColumnType("TIMESTAMP");
+                        .HasColumnType("Date");
 
                     b.Property<DateTime>("TimeStart")
-                        .HasColumnType("TIMESTAMP");
+                        .HasColumnType("Date");
 
                     b.Property<int>("WorkerId");
 

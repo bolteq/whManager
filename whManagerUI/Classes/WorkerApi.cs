@@ -19,7 +19,7 @@ namespace whManagerUI.Classes
 
         public async Task<IList<Worker>> get()
         {
-            string requestEndpoint = "worker";
+            string requestEndpoint = "workers";
             HttpResponseMessage httpResponse = await _httpClient.GetAsync(requestEndpoint);
             string json = await httpResponse.Content.ReadAsStringAsync();
             return (JsonConvert.DeserializeObject<IList<Worker>>(json));
