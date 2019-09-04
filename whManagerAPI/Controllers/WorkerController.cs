@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using whManagerAPI.Models;
 using whManagerLIB.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace whManagerAPI.Controllers
 {
@@ -18,26 +19,69 @@ namespace whManagerAPI.Controllers
             _context = context;
         }
 
-        [HttpGet]
-        public async Task<IActionResult> GetWorkers(int? id, string name)
+        //Metoda: queryWorkers
+        //Zwraca: Listę wszystkich 'Workers' z ich 'WorkSchedules' w zależności od wartości bool schedules
+
+        private IQueryable<Worker> queryWorkers(bool schedules)
         {
-            List<Worker> workersToReturn = new List<Worker>();
+            if (schedules)
+            {
+                IQueryable<Worker> query = _context.Workers.Include("WorkSchedules");
+                return query;
+            }
+            else
+            {
+                IQueryable<Worker> query = _context.Workers;
+                return query;
+            }
+        }
+
+        //Metoda: OnGet
+        //Zwraca: IActionResult(IQueryable<Worker>) w zależności od podanych parametrów GET
+
+        [HttpGet]
+        public IActionResult OnGet(int? id, string name, string surname, bool schedules)
+        {
+            IQueryable<Worker> qWorkers = queryWorkers(schedules);
+
             if(id != null)
             {
-                Worker worker = await _context.Workers.FindAsync(id);
-                worker.WorkSchedules = (_context.WorkSchedules.Where(workSchedule => workSchedule.WorkerId == worker.WorkerId)).ToList();
-                workersToReturn.Add(worker);
+                qWorkers = qWorkers
+                    .Where(w => w.WorkerId == id);
             }
-            else    
+
+            // Obsługa 4 sytuacji:
+            //  Name    Surname
+            //  0       0
+            //  0       1
+            //  1       0
+            //  1       1
+
+            // 1 1
+            if(!string.IsNullOrEmpty(name) && !string.IsNullOrEmpty(surname))
             {
-                List<Worker> workers = _context.Workers.ToList();
-                foreach(Worker worker in workers)
+                qWorkers = qWorkers.Where(w => w.Name == name && w.Surname == surname);
+            }
+            else
+            {
+                switch (name)
                 {
-                    worker.WorkSchedules = (_context.WorkSchedules.Where(workSchedule => workSchedule.WorkerId == worker.WorkerId)).ToList();
-                    workersToReturn.Add(worker);
+                    //0 0
+                    case null when surname == null:
+                        break;
+                    //0 1
+                    case null when !string.IsNullOrEmpty(surname):
+                        qWorkers = qWorkers
+                            .Where(w => w.Surname == surname);
+                        break;
+                    //1 0
+                    default:
+                        qWorkers = qWorkers.Where(w => w.Name == name);
+                        break;
                 }
             }
-            return Ok(workersToReturn);
+            
+            return Ok(qWorkers);
         }
     }
 }
