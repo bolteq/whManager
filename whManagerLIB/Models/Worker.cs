@@ -12,5 +12,6 @@ namespace whManagerLIB.Models
         public string PhoneNumber { get; set; }
         public string EmailAddress { get; set; }
         public ICollection<WorkSchedule> WorkSchedules { get; set; }
+        public ICollection<WarehouseWorkers> WorkingIn { get; set; }
     }
 }

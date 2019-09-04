@@ -7,7 +7,7 @@ namespace whManagerLIB.Models
     public class WorkSchedule
     {
         [Key]
-        public int scheduleId { get; set; }
+        public int ScheduleId { get; set; }
 
         [Column(TypeName = "TIMESTAMP")]
         public DateTime TimeStart { get; set; }
