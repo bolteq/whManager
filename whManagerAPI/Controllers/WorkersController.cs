@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using whManagerAPI.Models;
 using whManagerLIB.Models;
 using Microsoft.EntityFrameworkCore;
+using System;
 
 namespace whManagerAPI.Controllers
 {
@@ -44,44 +45,111 @@ namespace whManagerAPI.Controllers
         {
             IQueryable<Worker> qWorkers = queryWorkers(schedules);
 
-            if(id != null)
+            if (id != null)
             {
                 qWorkers = qWorkers
                     .Where(w => w.WorkerId == id);
+                return Ok(qWorkers);
             }
 
-            // Obsługa 4 sytuacji:
-            //  Name    Surname
-            //  0       0
-            //  0       1
-            //  1       0
-            //  1       1
+            // Zmienne pomocnicze dla instrukcji switch
 
-            // 1 1
-            if(!string.IsNullOrEmpty(name) && !string.IsNullOrEmpty(surname))
+            bool bName = string.IsNullOrEmpty(name);
+            bool bSurname = string.IsNullOrEmpty(surname);
+
+            switch (bName)
             {
-                qWorkers = qWorkers.Where(w => w.Name == name && w.Surname == surname);
+                //When name and surname not specified
+
+                case true when bSurname == true:
+                    break;
+
+                //When only surname specified
+
+                case true when bSurname == false:
+                    qWorkers = qWorkers
+                        .Where(w => w.Surname == surname);
+                    break;
+
+                //When only name specified
+
+                case false when bSurname == true:
+                    qWorkers = qWorkers
+                        .Where(w => w.Name == name);
+                    break;
+
+                //When name and surname specified
+
+                case false when bSurname == false:
+                    qWorkers = qWorkers
+                        .Where(w => w.Name == name && w.Surname == surname);
+                    break;
             }
-            else
+
+            return Ok(qWorkers);
+        }
+
+        [HttpPost]
+        public IActionResult OnPost(Worker worker)
+        {
+            //Jeśli nieprawidłowy status modelu zwróc BadRequest
+
+            if (!ModelState.IsValid)
             {
-                switch (name)
+                return BadRequest();
+            }
+
+            //If ID specified and worker exists, try to perform an update
+
+            if (_context.Workers.Any(w => w.WorkerId == worker.WorkerId))
+            {
+                try
                 {
-                    //0 0
-                    case null when surname == null:
-                        break;
-                    //0 1
-                    case null when !string.IsNullOrEmpty(surname):
-                        qWorkers = qWorkers
-                            .Where(w => w.Surname == surname);
-                        break;
-                    //1 0
-                    default:
-                        qWorkers = qWorkers.Where(w => w.Name == name);
-                        break;
+                    _context.Workers.Update(worker);
+                    _context.SaveChanges();
+                    return Ok(worker);
+                }
+                catch(DbUpdateException ex)
+                {
+                    return BadRequest(ex);
                 }
             }
-            
-            return Ok(qWorkers);
+
+            //Create new by default
+
+            try
+            {
+                _context.Workers.Attach(worker);
+                _context.SaveChanges();
+                return Ok(worker.WorkerId);
+            }
+            catch(Exception ex)
+            {
+                return BadRequest(ex);
+            }
+        }
+        
+        [HttpDelete]
+        public IActionResult OnDelete(int id)
+        {
+            if(_context.Workers.Any(w => w.WorkerId == id))
+            {
+                try
+                {
+                    var worker = _context.Workers.Find(id);
+
+                    _context.Workers.Remove(worker);
+                    _context.SaveChanges();
+
+                    return Ok($"Worker {id} deleted");
+                }
+                catch(Exception ex)
+                {
+                    return BadRequest(ex);
+                }
+            }
+
+            return BadRequest($"Worker with {id} doesn't exist");
         }
     }
 }
