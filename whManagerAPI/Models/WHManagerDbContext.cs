@@ -17,12 +17,20 @@ namespace whManagerAPI.Models
         {
             //Klucz główny złożony z dwóch atrybutów musi być tutaj zadeklarowany dla relacji wiele-do-wielu
             builder.Entity<WarehouseWorkers>().HasKey(t => new { t.WorkerId, t.WarehouseId });
+
+
+            //DevOnly!
+            builder.Entity<User>().HasData(
+                new { Id = 1, EmailAddress = "admin@admin.net", PasswordHash = "admin", Role = "admin" });
         }
 
         public DbSet<Warehouse> Warehouses { get; set; }
         public DbSet<Worker> Workers { get; set; }
         public DbSet<WorkSchedule> WorkSchedules { get; set; }
         public DbSet<WarehouseWorkers> WarehouseWorkers { get; set; }
+        public DbSet<User> Users { get; set; }
+        public DbSet<Role> Roles { get; set; }
+        public DbSet<Permission> Permissions { get; set; }
 
         
     }

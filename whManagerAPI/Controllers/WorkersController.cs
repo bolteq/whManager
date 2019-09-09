@@ -6,9 +6,10 @@ using whManagerAPI.Models;
 using whManagerLIB.Models;
 using Microsoft.EntityFrameworkCore;
 using System;
+using Microsoft.AspNetCore.Authorization;
 
 namespace whManagerAPI.Controllers
-{
+{   [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class WorkersController : ControllerBase
@@ -23,11 +24,11 @@ namespace whManagerAPI.Controllers
         //Metoda: queryWorkers
         //Zwraca: Listę wszystkich 'Workers' z ich 'WorkSchedules' w zależności od wartości bool schedules
 
-        private IQueryable<Worker> queryWorkers(bool schedules)
+        private IQueryable<Worker> QueryWorkers(bool schedules)
         {
             if (schedules)
             {
-                IQueryable<Worker> query = _context.Workers.Include("WorkSchedules");
+                IQueryable<Worker> query = _context.Workers.Include(w => w.WorkSchedules);
                 return query;
             }
             else
@@ -39,11 +40,11 @@ namespace whManagerAPI.Controllers
 
         //Metoda: OnGet
         //Zwraca: IActionResult(IQueryable<Worker>) w zależności od podanych parametrów GET
-
+        [Authorize(Roles = "admin")]
         [HttpGet]
         public IActionResult OnGet(int? id, string name, string surname, bool schedules)
         {
-            IQueryable<Worker> qWorkers = queryWorkers(schedules);
+            IQueryable<Worker> qWorkers = QueryWorkers(schedules);
 
             if (id != null)
             {
