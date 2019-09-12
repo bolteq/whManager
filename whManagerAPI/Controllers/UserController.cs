@@ -10,7 +10,6 @@ using whManagerLIB.Models;
 namespace whManagerAPI.Controllers
 {
     [Authorize]
-    [Route("api/[controller]")]
     [ApiController]
     public class UserController : Controller
     {
@@ -24,6 +23,7 @@ namespace whManagerAPI.Controllers
 
         [AllowAnonymous]
         [HttpPost]
+        [Route("api/[controller]/login")]
         public async Task<IActionResult> Login([FromBody]User userData)
         {
             User user = await _userService.Login(userData.EmailAddress, userData.PasswordHash);
@@ -36,5 +36,19 @@ namespace whManagerAPI.Controllers
             return Ok(user);
         }
 
+        [Authorize(Roles = "Administrator, Spedytor")]
+        [HttpPost]
+        [Route("api/[controller]/register")]
+        public async Task<IActionResult> Register([FromBody]User userData)
+        {
+            
+            if (ModelState.IsValid)
+            {
+                await _userService.Register(userData.EmailAddress, userData.PasswordHash, userData.Role);
+            }
+            
+
+            return Ok();
+        }
     }
 }

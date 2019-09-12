@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using whManagerAPI.Models;
@@ -9,9 +10,10 @@ using whManagerAPI.Models;
 namespace whManagerAPI.Migrations
 {
     [DbContext(typeof(WHManagerDbContext))]
-    partial class WHManagerDbContextModelSnapshot : ModelSnapshot
+    [Migration("20190912173750_Identity changes")]
+    partial class Identitychanges
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -52,19 +54,17 @@ namespace whManagerAPI.Migrations
                     b.Property<string>("PasswordHash")
                         .IsRequired();
 
-                    b.Property<string>("PasswordSalt");
+                    b.Property<string>("PasswordSalt")
+                        .IsRequired();
 
-                    b.Property<string>("Role");
+                    b.Property<string>("Role")
+                        .IsRequired();
 
                     b.Property<string>("Token");
 
                     b.HasKey("Id");
 
                     b.ToTable("Users");
-
-                    b.HasData(
-                        new { Id = 1, DateCreated = new DateTime(2019, 9, 12, 19, 53, 50, 608, DateTimeKind.Local), EmailAddress = "admin@admin.net", PasswordHash = "NcdSH9v26HxU+E055hA2NFqsxgOl/RlRlrBm09MeMn8=", PasswordSalt = "mhIqy+de5cQ4/fRk7Jrl7hg1C6JeT6RVlK6axgzJxFLjAcbBcs1AV/S4/FqWnPAufHuZNm9s8Q7Qzc3wOrtMVA==", Role = "Administrator" }
-                    );
                 });
 
             modelBuilder.Entity("whManagerLIB.Models.Warehouse", b =>

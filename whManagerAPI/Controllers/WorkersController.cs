@@ -40,7 +40,7 @@ namespace whManagerAPI.Controllers
 
         //Metoda: OnGet
         //Zwraca: IActionResult(IQueryable<Worker>) w zależności od podanych parametrów GET
-        [Authorize(Roles = "admin")]
+        [Authorize(Roles = "Administrator")]
         [HttpGet]
         public IActionResult OnGet(int? id, string name, string surname, bool schedules)
         {

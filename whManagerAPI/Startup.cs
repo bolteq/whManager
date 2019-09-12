@@ -59,6 +59,7 @@ namespace whManagerAPI
             });
 
             services.AddScoped<UserService>();
+            services.AddScoped<PasswordCrypter>();
             services.AddDbContext<WHManagerDbContext>(options => options.UseNpgsql(Configuration.GetConnectionString("Dev")));
         }
 
