@@ -41,14 +41,32 @@ namespace whManagerAPI.Controllers
         [Route("api/[controller]/register")]
         public async Task<IActionResult> Register([FromBody]User userData)
         {
-            
-            if (ModelState.IsValid)
+
+            if (!ModelState.IsValid)
             {
-                await _userService.Register(userData.EmailAddress, userData.PasswordHash, userData.Role);
+                return BadRequest();
+            }
+
+            //Sprawdź czy użytkownik jest Administratorem lub Spedytorem
+            bool isAdmin = HttpContext.User.Claims.Any(c => c.Value == "Administrator");
+            bool isSpedytor = HttpContext.User.Claims.Any(c => c.Value == "Spedytor");
+
+            //Nie pozwól Spedytorowi utworzyć użytkownika o wyższych uprawnieniach od kierowcy
+            if(isSpedytor && userData.Role != "Kierowca")
+            {
+                return BadRequest("Nie możesz utworzyć użytkownika o uprawnieniach wyższych niż Kierowca");
+            }
+
+            var result = await _userService.Register(userData.EmailAddress, userData.PasswordHash, userData.Role);
+            if(!result.Status)
+            {
+                return BadRequest(result.Message);
+            }
+            else
+            {
+                return Ok();
             }
             
-
-            return Ok();
         }
     }
 }

@@ -9,6 +9,7 @@ namespace whManagerLIB.Models
         [Key]
         public int Id { get; set; }
         [Required]
+        [EmailAddressAttribute]
         public string EmailAddress { get; set; }
         [Required]
         public string PasswordHash { get; set; }
