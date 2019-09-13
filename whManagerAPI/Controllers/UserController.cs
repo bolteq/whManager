@@ -47,8 +47,7 @@ namespace whManagerAPI.Controllers
                 return BadRequest();
             }
 
-            //Sprawdź czy użytkownik jest Administratorem lub Spedytorem
-            bool isAdmin = HttpContext.User.Claims.Any(c => c.Value == "Administrator");
+            //Sprawdź czy użytkownik jest Spedytorem
             bool isSpedytor = HttpContext.User.Claims.Any(c => c.Value == "Spedytor");
 
             //Nie pozwól Spedytorowi utworzyć użytkownika o wyższych uprawnieniach od kierowcy

@@ -8,6 +8,6 @@ Autoryzacja
     - Usuwanie u¿ytkownika
 	- Zmiana has³a
 	- Edycja danych
-2. Tworzenie u¿ytkownika - Walidacja E-Mail (czy jest poprawny, czy ju¿ istnieje w bazie)
-3. Tworzenie u¿ytkownia - Spedytor mo¿e tylko kierowców, Administrator wszystkich:(HttpContext.User.Claims)
+2. Przetestowaæ dzia³anie utworzonych ograniczeñ (E-Mail, Spedytor mo¿e tworzyæ tylko kierowców)
+3. Spróbowaæ przenieœæ logikê z UserController / Register do UserService
 
