@@ -7,6 +7,7 @@ using whManagerLIB.Models;
 using Microsoft.EntityFrameworkCore;
 using System;
 using Microsoft.AspNetCore.Authorization;
+using whManagerAPI.Helpers;
 
 namespace whManagerAPI.Controllers
 {   [Authorize]
@@ -40,7 +41,7 @@ namespace whManagerAPI.Controllers
 
         //Metoda: OnGet
         //Zwraca: IActionResult(IQueryable<Worker>) w zależności od podanych parametrów GET
-        [Authorize(Roles = "Administrator")]
+        [Authorize(Roles = RoleHelper.Administrator)]
         [HttpGet]
         public IActionResult OnGet(int? id, string name, string surname, bool schedules)
         {

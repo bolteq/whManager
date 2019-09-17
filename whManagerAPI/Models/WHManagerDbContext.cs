@@ -31,29 +31,29 @@ namespace whManagerAPI.Models
                     EmailAddress = "admin@admin.net",
                     PasswordSalt = adminSalt,
                     PasswordHash = _passwordCrypter.CreateHash("admin", adminSalt),
-                    Role = "Administrator",
+                    Role = RoleHelper.Administrator,
                     DateCreated = DateTime.Now });
 
 
             //Podstawowe role
             builder.Entity<Role>().HasData(
                 new {
-                    Name = "Kierowca",
+                    Name = RoleHelper.Kierowca,
                     Description = "Rola przeznaczona dla kierowców danego spedytora, pozwala tylko na logowanie się i przeglądanie własnych dostaw" },
                 new
                 {
-                    Name = "Spedytor",
+                    Name = RoleHelper.Spedytor,
                     Description = "Rola przeznaczona dla spedytorów, pozwala na: tworzenie użytkowników z uprawnieniami kierowców, dodawanie i" +
                 " przeglądanie własnych samochodów i dostaw, rezerwacje terminów"
                 },
                 new
                 {
-                    Name = "Magazynier",
+                    Name = RoleHelper.Magazynier,
                     Description = "Wszystkie uprawnienia poza tworzeniem nowych użytkowników"
                 },
                 new
                 {
-                    Name = "Administrator",
+                    Name = RoleHelper.Administrator,
                     Description = "Wszystkie uprawnienia"
                 }
                 );
