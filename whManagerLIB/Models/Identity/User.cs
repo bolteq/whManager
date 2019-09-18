@@ -12,6 +12,7 @@ namespace whManagerLIB.Models
         [EmailAddressAttribute]
         public string EmailAddress { get; set; }
         [Required]
+        [DataType(DataType.Password)]
         public string PasswordHash { get; set; }
 
         public string PasswordSalt { get; set; }

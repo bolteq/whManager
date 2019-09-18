@@ -3,32 +3,7 @@
 @{
     ViewData["Title"] = "Home page";
 }
-<div>
-    <table class="table">
-        <thead>
-            <tr>
-                <th>
-                    @Html.DisplayNameFor(model => model.Workers[0].Name)
-                    </a>
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.Workers[0].Surname)
-                </th>
-                <th></th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var item in Model.Workers)
-            {
-                <tr>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Name)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Surname)
-                    </td>
-                </tr>
-            }
-        </tbody>
-    </table>
-</div>
+
+
+    <h1>Witaj, @Model.username</h1>
+<p>Twój token to: @Model.token</p>

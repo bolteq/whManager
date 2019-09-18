@@ -1,31 +1,23 @@
-﻿using System.Collections.Generic;
-using System.Net.Http;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Newtonsoft.Json;
 using whManagerLIB.Models;
-using whManagerUI.Classes;
+using whManagerUI.Helpers;
 
 namespace whManagerUI.Pages
 {
     public class IndexModel : PageModel
     {
-        public IList<Worker> Workers { get; set; }
-        private WorkerApi workerApi;
-        private readonly HttpClient _httpClient;
-        public WorkSchedule WorkSchedule { get; set; }
-
-        public IndexModel(HttpClient httpClient)
+        public string token { get; set; }
+        public string username { get; set; }
+        public void OnGet()
         {
-            _httpClient = httpClient;
-            workerApi = new WorkerApi(_httpClient);
+            token = HttpContext.Session.GetString(SessionHelper.Token);
+            username = HttpContext.Session.GetString(SessionHelper.Username);
         }
-
-        public async Task OnGetAsync()
-        {
-            Workers = await workerApi.get();
-        }
-
     }
 }

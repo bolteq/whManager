@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using whManagerUI.Services;
 
 namespace whManagerUI
 {
@@ -33,19 +34,22 @@ namespace whManagerUI
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
 
-            HttpClient httpClient = new HttpClient() {
+            HttpClient httpClient = new HttpClient()
+            {
                 BaseAddress = Configuration.GetValue<Uri>("API")
             };
             ServicePointManager.FindServicePoint(httpClient.BaseAddress).ConnectionLeaseTimeout = 60000; // sixty seconds
 
             services.AddSingleton<HttpClient>(httpClient);
+            services.AddScoped<UserService>();
+
+            services.AddSession();
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
-
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
@@ -55,7 +59,7 @@ namespace whManagerUI
                 app.UseExceptionHandler("/Error");
                 app.UseHsts();
             }
-
+            app.UseSession();   
             app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseCookiePolicy();

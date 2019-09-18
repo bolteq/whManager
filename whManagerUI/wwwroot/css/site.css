@@ -12,6 +12,10 @@ body {
     padding-right: 15px;
 }
 
+.login-form {
+    margin: 50px 0px;
+}
+
 /* Carousel */
 .carousel-caption p {
     font-size: 20px;
