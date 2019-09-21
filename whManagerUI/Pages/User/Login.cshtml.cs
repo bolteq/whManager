@@ -41,8 +41,7 @@ namespace whManagerUI.Pages.User
                 return Page();
             }
 
-            HttpContext.Session.SetString(SessionHelper.Username, user.EmailAddress);
-            HttpContext.Session.SetString(SessionHelper.Token, user.Token);
+            SessionHelper.SetSession(HttpContext, user);
 
             return RedirectToPage("../Index");
 

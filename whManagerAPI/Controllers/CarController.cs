@@ -23,6 +23,7 @@ namespace whManagerAPI.Controllers
 
         [Authorize(Roles = RoleHelper.SpedytorAdministrator)]
         [HttpGet]
+        [Route("api/[controller]")]
         public async Task<IActionResult> GetCars()
         {
             bool isSpedytor = HttpContext.User.Claims.Any(c => c.Value == "Spedytor");

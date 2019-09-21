@@ -20,7 +20,7 @@ namespace whManagerLIB.Models
         public string Token { get; set; }
         [Column(TypeName = "TIMESTAMP")]
         public DateTime DateCreated { get; set; }
-        public int CompanyId { get; set; }
+        public int? CompanyId { get; set; }
         public Company Company { get; set; }
     }
 }

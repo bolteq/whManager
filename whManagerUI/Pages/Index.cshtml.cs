@@ -12,12 +12,12 @@ namespace whManagerUI.Pages
 {
     public class IndexModel : PageModel
     {
-        public string token { get; set; }
-        public string username { get; set; }
+        [BindProperty]
+        public SessionHelper sessionHelper { get; set; }
         public void OnGet()
         {
-            token = HttpContext.Session.GetString(SessionHelper.Token);
-            username = HttpContext.Session.GetString(SessionHelper.Username);
+            sessionHelper = new SessionHelper();
+            sessionHelper.GetSession(HttpContext);
         }
     }
 }
