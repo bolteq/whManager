@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using whManagerAPI.Models;
@@ -9,9 +10,10 @@ using whManagerAPI.Models;
 namespace whManagerAPI.Migrations
 {
     [DbContext(typeof(WHManagerDbContext))]
-    partial class WHManagerDbContextModelSnapshot : ModelSnapshot
+    [Migration("20190921124238_DBSet")]
+    partial class DBSet
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -51,10 +53,6 @@ namespace whManagerAPI.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Companies");
-
-                    b.HasData(
-                        new { Id = 1, Name = "BTH Import Stal" }
-                    );
                 });
 
             modelBuilder.Entity("whManagerLIB.Models.Delivery", b =>
@@ -175,7 +173,7 @@ namespace whManagerAPI.Migrations
                     b.ToTable("Users");
 
                     b.HasData(
-                        new { Id = 1, CompanyId = 1, DateCreated = new DateTime(2019, 9, 21, 14, 59, 53, 600, DateTimeKind.Local), EmailAddress = "admin@admin.net", PasswordHash = "CD0fgZW+TuR28YgA7yqBtL6pCYNEau0IaLP2GbgD7Fc=", PasswordSalt = "I38i82RoymmhllUvA4ZQrdr/mkBVKbKpdrxNLoDBJ8t4YU1949TVmCo9uYaCpijLDT61FPxGDdLkf1+fiZjmsw==", Role = "Administrator" }
+                        new { Id = 1, DateCreated = new DateTime(2019, 9, 21, 14, 42, 38, 601, DateTimeKind.Local), EmailAddress = "admin@admin.net", PasswordHash = "5+r81qCZ8EwX5oVA9C/NQ6/qRtKd+Vb7ty+v7eHn87o=", PasswordSalt = "5TM7/kxV8uUhMVgrglyCz76L7Cmxg1/zJGM8nW9L5AC0HbY/5IkZuXnF2YmbtVVgx/4ppWYvDEW+Sb+q3jfiwQ==", Role = "Administrator" }
                     );
                 });
 

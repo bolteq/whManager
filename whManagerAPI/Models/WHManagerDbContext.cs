@@ -18,6 +18,16 @@ namespace whManagerAPI.Models
             _passwordCrypter = passwordCrypter;
         }
 
+        public DbSet<Warehouse> Warehouses { get; set; }
+        public DbSet<User> Users { get; set; }
+        public DbSet<Role> Roles { get; set; }
+        public DbSet<Delivery> Deliveries { get; set; }
+        public DbSet<DeliveryType> DeliveryTypes { get; set; }
+        public DbSet<Unloading> Unloadings { get; set; }
+        public DbSet<Car> Cars { get; set; }
+        public DbSet<Company> Companies { get; set; }
+        public DbSet<Trailer> Trailers { get; set; }
+
         protected override void OnModelCreating(ModelBuilder builder)
         {
 
@@ -30,7 +40,16 @@ namespace whManagerAPI.Models
                     PasswordSalt = adminSalt,
                     PasswordHash = _passwordCrypter.CreateHash("admin", adminSalt),
                     Role = RoleHelper.Administrator,
-                    DateCreated = DateTime.Now });
+                    DateCreated = DateTime.Now,
+                    CompanyId = 1
+                }) ;
+
+            builder.Entity<Company>().HasData(
+                new
+                {
+                    Id = 1,
+                    Name = "BTH Import Stal"
+                });
 
 
             //Podstawowe role
@@ -56,10 +75,6 @@ namespace whManagerAPI.Models
                 }
                 );
         }
-
-        public DbSet<Warehouse> Warehouses { get; set; }
-        public DbSet<User> Users { get; set; }
-        public DbSet<Role> Roles { get; set; }
 
         
     }

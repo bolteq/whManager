@@ -30,9 +30,15 @@ namespace whManagerAPI.Controllers
             switch(isSpedytor)
             {
                 case true:
-                    return Ok();
+                    var companyId = HttpContext.User.Claims
+                        .Where(c => c.Type == "companyId")
+                        .Select(c => int.Parse(c.Value))
+                        .FirstOrDefault();
+                    var companyCars = _context.Cars.Where(c => c.companyId == companyId);
+                    return Ok(companyCars);
                 case false:
-                    return Ok();
+                    var allCars = _context.Cars;
+                    return Ok(allCars);
             }
             return BadRequest();
         }
