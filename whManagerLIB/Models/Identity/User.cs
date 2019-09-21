@@ -9,7 +9,7 @@ namespace whManagerLIB.Models
         [Key]
         public int Id { get; set; }
         [Required]
-        [EmailAddressAttribute]
+        [EmailAddress]
         public string EmailAddress { get; set; }
         [Required]
         [DataType(DataType.Password)]
@@ -20,5 +20,7 @@ namespace whManagerLIB.Models
         public string Token { get; set; }
         [Column(TypeName = "TIMESTAMP")]
         public DateTime DateCreated { get; set; }
+        public int CompanyId { get; set; }
+        public Company Company { get; set; }
     }
 }

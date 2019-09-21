@@ -20,8 +20,6 @@ namespace whManagerAPI.Models
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
-            //Klucz główny złożony z dwóch atrybutów musi być tutaj zadeklarowany dla relacji wiele-do-wielu
-            builder.Entity<WarehouseWorkers>().HasKey(t => new { t.WorkerId, t.WarehouseId });
 
             //Na cele deweloperskie oraz prezentacji!
 
@@ -60,9 +58,6 @@ namespace whManagerAPI.Models
         }
 
         public DbSet<Warehouse> Warehouses { get; set; }
-        public DbSet<Worker> Workers { get; set; }
-        public DbSet<WorkSchedule> WorkSchedules { get; set; }
-        public DbSet<WarehouseWorkers> WarehouseWorkers { get; set; }
         public DbSet<User> Users { get; set; }
         public DbSet<Role> Roles { get; set; }
 
