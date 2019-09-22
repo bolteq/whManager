@@ -22,6 +22,24 @@ namespace whManagerUI.Services
             _httpClient = httpClient;
         }
 
+        public async Task<Car> GetCar(int id, SessionHelper sessionHelper)
+        {
+            string requestEndpoint = $"car/{id}";
+
+            var requestMessage = new HttpRequestMessage(HttpMethod.Get, requestEndpoint);
+            requestMessage.Headers.Authorization = new AuthenticationHeaderValue("Bearer", sessionHelper.TokenValue);
+            var httpResponse = await _httpClient.SendAsync(requestMessage);
+
+            if (httpResponse.IsSuccessStatusCode)
+            {
+                var data = await httpResponse.Content.ReadAsStringAsync();
+                var car = JsonConvert.DeserializeObject<Car>(data);
+
+                return car;
+            }
+
+            return null;
+        }
         public async Task<List<Car>> GetCars(SessionHelper sessionHelper)
         {
             string requestEndpoint = "car";

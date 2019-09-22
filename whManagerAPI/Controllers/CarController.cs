@@ -25,6 +25,31 @@ namespace whManagerAPI.Controllers
 
         [Authorize(Roles = RoleHelper.SpedytorAdministrator)]
         [HttpGet]
+        [Route("api/[controller]/{id}")]
+        public async Task<IActionResult> GetCar([FromRoute] int id)
+        {
+            bool isSpedytor = HttpContext.User.Claims.Any(c => c.Value == RoleHelper.Spedytor);
+            var companyId = HttpContext.User.Claims
+                    .Where(c => c.Type == MyClaims.CompanyId)
+                    .Select(c => int.Parse(c.Value))
+                    .FirstOrDefault();
+
+            var car = await _context.Cars.FirstOrDefaultAsync(c => c.Id == id);
+
+            if(car == null)
+            {
+                return BadRequest();
+            }
+            if(isSpedytor && car.companyId != companyId)
+            {
+                return BadRequest();
+            }
+
+            return Ok(car);
+        }
+
+        [Authorize(Roles = RoleHelper.SpedytorAdministrator)]
+        [HttpGet]
         [Route("api/[controller]")]
         public IActionResult GetCars()
         {
@@ -65,9 +90,10 @@ namespace whManagerAPI.Controllers
 
             //Sprawdź czy car już istnieje
 
-            var bExists = await _context
+            var bExists = _context
                 .Cars
-                .AnyAsync(c => c.Id == car.Id);
+                .Where(c => c.Id == car.Id)
+                .Any();
 
             //Pobierz ID firmy użytkownika z kontekstu
 
@@ -85,7 +111,7 @@ namespace whManagerAPI.Controllers
                 {
                     return BadRequest();
                 }
-                _context.Cars.Attach(car);
+                _context.Cars.Update(car);
                 await _context.SaveChangesAsync();
                 var result = new Result()
                 {

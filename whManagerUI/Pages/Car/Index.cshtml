@@ -14,15 +14,19 @@
         </tr>
     </thead>
     <tbody>
-        @foreach (var item in Model.Cars)
+        @if (Model.Cars != null)
         {
-            <tr>
-                <td>@item.PlateNumber</td>
-                <td><a href="/car/delete?id=@item.Id">Delete</a></td>
-                <td><a href="/car/edit?id=@item.Id">Edit</a></td>
-            </tr>
+            @foreach (var item in Model.Cars)
+            {
+                <tr>
+                    <td>@item.Id, @item.PlateNumber</td>
+                    <td><a href="/car/delete?id=@item.Id">Delete</a></td>
+                    <td><a href="/car/edit?id=@item.Id">Edit</a></td>
+                </tr>
 
+            }
         }
+
     </tbody>
 </table>
 

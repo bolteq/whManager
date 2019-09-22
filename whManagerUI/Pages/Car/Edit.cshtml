@@ -4,5 +4,11 @@
     ViewData["Title"] = "Edit";
 }
 
-<h2>Edit</h2>
+<h2>Edytowanie pojazdu @Model.Car.PlateNumber</h2>
 
+<form method="post" class="form-inline">
+    <div class="form-group">
+        <input asp-for="Car.PlateNumber" class="form-control" />
+    </div>
+    <button type="submit" class="btn btn-default">Submit</button>
+</form> 
