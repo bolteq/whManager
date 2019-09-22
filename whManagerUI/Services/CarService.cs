@@ -73,5 +73,36 @@ namespace whManagerUI.Services
             }
 
         }
+
+        public async Task<Result> DeleteCar(int id, SessionHelper sessionHelper)
+        {
+            string requestEndpoint = $"car?id={id}";
+
+            var requestMessage = new HttpRequestMessage(HttpMethod.Delete, requestEndpoint);
+            requestMessage.Headers.Authorization = new AuthenticationHeaderValue("Bearer", sessionHelper.TokenValue);
+
+            HttpResponseMessage httpResponse = await _httpClient.SendAsync(requestMessage);
+
+            if (httpResponse.IsSuccessStatusCode)
+            {
+                var result = new Result()
+                {
+                    Message = SuccessMessages.ObjectDeleted,
+                    Status = true
+                };
+
+                return result;
+            }
+            else
+            {
+                var result = new Result()
+                {
+                    Message = Errors.DeleteDataFailed,
+                    Status = false
+                };
+
+                return result;
+            }
+        }
     }
 }

@@ -8,5 +8,6 @@ namespace whManagerLIB.Helpers
     {
         public static string ObjectCreated = "Object created";
         public static string ObjectModified = "Object modified";
+        public static string ObjectDeleted = "Object deleted";
     }
 }

@@ -11,5 +11,6 @@ namespace whManagerLIB.Helpers
         public static string ModelAlreadyExist = "Model already exist";
         public static string FetchDataFailed = "Failed to fetch data";
         public static string InsertDataFailed = "Failed to insert data";
+        public static string DeleteDataFailed = "Delete data failed";
     }
 }
