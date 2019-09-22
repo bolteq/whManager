@@ -11,6 +11,7 @@ using System.Security.Claims;
 using Microsoft.Extensions.Options;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using whManagerLIB.Helpers;
 
 namespace whManagerAPI.Services
 {

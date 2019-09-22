@@ -1,0 +1,34 @@
+﻿@page
+@model whManagerUI.Pages.Car.IndexModel
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h2>Lista samochodów:</h2>
+
+<table class="table table-striped table-bordered table-responsive">
+    <thead>
+        <tr>
+            <th scope="col">Plate Number</th>
+            <th scope="col" colspan="2">Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.Cars)
+        {
+            <tr>
+                <td>@item.PlateNumber</td>
+                <td><a href="/delete">Delete</a></td>
+                <td><a href="/delete">Edit</a></td>
+            </tr>
+
+        }
+    </tbody>
+</table>
+
+<form method="post" class="form-inline">
+    <div class="form-group">
+        <input asp-for="Car.PlateNumber" class="form-control" />
+    </div>
+    <button type="submit" class="btn btn-default">Submit</button>
+</form> 

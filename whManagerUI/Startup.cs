@@ -42,6 +42,7 @@ namespace whManagerUI
 
             services.AddSingleton<HttpClient>(httpClient);
             services.AddScoped<UserService>();
+            services.AddScoped<CarService>();
 
             services.AddSession();
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);

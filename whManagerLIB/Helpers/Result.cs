@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace whManagerAPI.Helpers
+namespace whManagerLIB.Helpers
 {
     public class Result
     {
