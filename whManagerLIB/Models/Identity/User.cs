@@ -16,7 +16,6 @@ namespace whManagerLIB.Models
         public string PasswordHash { get; set; }
 
         public string PasswordSalt { get; set; }
-        [Required]
         public string Role { get; set; }
         public string Token { get; set; }
         [Column(TypeName = "TIMESTAMP")]

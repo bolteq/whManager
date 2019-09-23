@@ -1,4 +1,15 @@
-﻿<!DOCTYPE html>
+﻿@using Microsoft.AspNetCore.Http;
+@using whManagerUI.Helpers;
+@using whManagerLIB.Helpers;
+
+@{
+    string token = Context.Session.GetString(SessionHelper.Token);
+    bool bToken = string.IsNullOrEmpty(token);
+    string role = Context.Session.GetString(SessionHelper.Role);
+}
+
+
+<!DOCTYPE html>
 <html>
 <head>
     <meta charset="utf-8" />
@@ -32,8 +43,21 @@
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
                     <li><a asp-page="/Index">Home</a></li>
-                    <li><a asp-page="/User/Login">Login</a></li>
-                    <li><a asp-page="/Contact">Contact</a></li>
+                    @if (bToken)
+                    {
+                        <li><a asp-page="/User/Login">Login</a></li>
+                    }
+                    @if (!bToken)
+                    {
+                        <li><a asp-page="/Car/Index">Lista samochodów</a></li>
+
+                        @if (role == RoleHelper.Administrator)
+                        {
+                            <li><a asp-page="/Company/Index">Lista firm</a></li>
+                        }
+
+                    }
+
                 </ul>
             </div>
         </div>

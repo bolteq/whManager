@@ -8,6 +8,7 @@ using whManagerAPI.Helpers;
 using whManagerAPI.Models;
 using whManagerLIB.Models;
 using Microsoft.EntityFrameworkCore;
+using whManagerLIB.Helpers;
 
 namespace whManagerAPI.Controllers
 {

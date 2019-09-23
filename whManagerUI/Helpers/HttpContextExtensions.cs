@@ -19,6 +19,7 @@ namespace whManagerUI.Helpers
             httpContext.Session.SetString(SessionHelper.Username, user.EmailAddress);
             httpContext.Session.SetString(SessionHelper.Token, user.Token);
             httpContext.Session.SetString(SessionHelper.CompanyId, user.CompanyId.ToString());
+            httpContext.Session.SetString(SessionHelper.Role, user.Role);
         }
 
     }

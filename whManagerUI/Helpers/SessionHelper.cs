@@ -12,5 +12,6 @@ namespace whManagerUI.Helpers
         public static string Username = "Username";
         public static string Token = "Token";
         public static string CompanyId = "CompanyId";
+        public static string Role = "Role";
     }
 }

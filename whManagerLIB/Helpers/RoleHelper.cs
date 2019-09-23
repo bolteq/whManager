@@ -1,4 +1,4 @@
-﻿namespace whManagerAPI.Helpers
+﻿namespace whManagerLIB.Helpers
 {
     public static class RoleHelper
     {

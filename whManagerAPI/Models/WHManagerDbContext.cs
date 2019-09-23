@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using whManagerAPI.Helpers;
+using whManagerLIB.Helpers;
 using whManagerLIB.Models;
 
 namespace whManagerAPI.Models
