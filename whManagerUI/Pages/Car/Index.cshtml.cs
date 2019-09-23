@@ -33,9 +33,8 @@ namespace whManagerUI.Pages.Car
             {
                 return RedirectToPage("/User/Login");
             }
+
             Cars = new List<whManagerLIB.Models.Car>();
-
-
             Cars = await _carService.GetCars(token);
 
             return Page();

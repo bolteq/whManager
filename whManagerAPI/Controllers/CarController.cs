@@ -1,12 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using whManagerAPI.Models;
 using Microsoft.EntityFrameworkCore;
-using Newtonsoft.Json;
 using whManagerAPI.Helpers;
 using whManagerLIB.Models;
 using whManagerLIB.Helpers;
