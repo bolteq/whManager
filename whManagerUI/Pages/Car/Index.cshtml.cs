@@ -26,9 +26,8 @@ namespace whManagerUI.Pages.Car
         }
         public async Task<IActionResult> OnGet()
         {
-            sessionHelper = new SessionHelper();
-            sessionHelper.GetSession(HttpContext);
-            var bToken = String.IsNullOrEmpty(sessionHelper.TokenValue);
+            var token = HttpContext.GetToken();
+            var bToken = String.IsNullOrEmpty(token);
 
             if(bToken)
             {
@@ -37,7 +36,7 @@ namespace whManagerUI.Pages.Car
             Cars = new List<whManagerLIB.Models.Car>();
 
 
-            Cars = await _carService.GetCars(sessionHelper);
+            Cars = await _carService.GetCars(token);
 
             return Page();
         }
@@ -49,17 +48,16 @@ namespace whManagerUI.Pages.Car
                 return Page();
             }
 
-            sessionHelper = new SessionHelper();
-            sessionHelper.GetSession(HttpContext);
-            var bToken = String.IsNullOrEmpty(sessionHelper.TokenValue);
+            var token = HttpContext.GetToken();
+            var bToken = String.IsNullOrEmpty(token);
 
             if (bToken)
             {
                 return RedirectToPage("/User/Login");
             }
-            await _carService.AddCar(Car, sessionHelper);
+            await _carService.AddCar(Car, token);
             Cars = new List<whManagerLIB.Models.Car>();
-            Cars = await _carService.GetCars(sessionHelper);
+            Cars = await _carService.GetCars(token);
             return Page();
         }
     }

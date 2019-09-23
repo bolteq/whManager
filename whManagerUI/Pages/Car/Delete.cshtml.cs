@@ -12,7 +12,6 @@ namespace whManagerUI.Pages.Car
     public class DeleteModel : PageModel
     {
         private readonly CarService _carService;
-        private SessionHelper sessionHelper { get; set; }
 
         public DeleteModel(CarService carService)
         {
@@ -20,10 +19,9 @@ namespace whManagerUI.Pages.Car
         }
         public async Task<IActionResult> OnGet(int id)
         {
-            sessionHelper = new SessionHelper();
-            sessionHelper.GetSession(HttpContext);
+            var token = HttpContext.GetToken();
 
-            await _carService.DeleteCar(id, sessionHelper);
+            await _carService.DeleteCar(id, token);
 
             return RedirectToPage("/Car/Index");
         }

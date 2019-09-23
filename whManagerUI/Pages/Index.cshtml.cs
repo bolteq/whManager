@@ -10,14 +10,14 @@ using whManagerUI.Helpers;
 
 namespace whManagerUI.Pages
 {
+
     public class IndexModel : PageModel
     {
         [BindProperty]
-        public SessionHelper sessionHelper { get; set; }
+        public string token { get; set; }
         public void OnGet()
         {
-            sessionHelper = new SessionHelper();
-            sessionHelper.GetSession(HttpContext);
+            token = HttpContext.GetToken();
         }
     }
 }

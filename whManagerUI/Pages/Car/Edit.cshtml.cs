@@ -23,10 +23,9 @@ namespace whManagerUI.Pages.Car
         }
         public async Task<IActionResult> OnGet(int id)
         {
-            sessionHelper = new SessionHelper();
-            sessionHelper.GetSession(HttpContext);
+            var token = HttpContext.GetToken();
 
-            Car = await _carService.GetCar(id, sessionHelper);
+            Car = await _carService.GetCar(id, token);
 
 
             return Page();
@@ -35,14 +34,13 @@ namespace whManagerUI.Pages.Car
 
         public async Task<IActionResult> OnPost([FromQuery] int id, [FromForm] whManagerLIB.Models.Car Car)
         {
-            sessionHelper = new SessionHelper();
-            sessionHelper.GetSession(HttpContext);
-            var existingCar = await _carService.GetCar(id, sessionHelper);
+            var token = HttpContext.GetToken();
+            var existingCar = await _carService.GetCar(id, token);
 
             Car.companyId = existingCar.companyId;
             Car.Id = existingCar.Id;
 
-            await _carService.AddCar(Car, sessionHelper);
+            await _carService.AddCar(Car, token);
 
             return RedirectToPage("/car/index");
 

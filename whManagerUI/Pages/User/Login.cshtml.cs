@@ -41,7 +41,7 @@ namespace whManagerUI.Pages.User
                 return Page();
             }
 
-            SessionHelper.SetSession(HttpContext, user);
+            HttpContext.SetSession(user);
 
             return RedirectToPage("../Index");
 

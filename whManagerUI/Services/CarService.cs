@@ -1,11 +1,9 @@
 ﻿using Newtonsoft.Json;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
 using whManagerLIB.Models;
-using System.Collections.Generic;
 using whManagerLIB.Helpers;
 using System.Text;
 using System.Net.Http.Headers;
@@ -22,12 +20,12 @@ namespace whManagerUI.Services
             _httpClient = httpClient;
         }
 
-        public async Task<Car> GetCar(int id, SessionHelper sessionHelper)
+        public async Task<Car> GetCar(int id, string token)
         {
             string requestEndpoint = $"car/{id}";
 
             var requestMessage = new HttpRequestMessage(HttpMethod.Get, requestEndpoint);
-            requestMessage.Headers.Authorization = new AuthenticationHeaderValue("Bearer", sessionHelper.TokenValue);
+            requestMessage.Headers.Authorization = new AuthenticationHeaderValue("Bearer", token);
             var httpResponse = await _httpClient.SendAsync(requestMessage);
 
             if (httpResponse.IsSuccessStatusCode)
@@ -40,12 +38,12 @@ namespace whManagerUI.Services
 
             return null;
         }
-        public async Task<List<Car>> GetCars(SessionHelper sessionHelper)
+        public async Task<List<Car>> GetCars(string token)
         {
             string requestEndpoint = "car";
 
             var requestMessage = new HttpRequestMessage(HttpMethod.Get, requestEndpoint);
-            requestMessage.Headers.Authorization = new AuthenticationHeaderValue("Bearer", sessionHelper.TokenValue);
+            requestMessage.Headers.Authorization = new AuthenticationHeaderValue("Bearer", token);
             var httpResponse = await _httpClient.SendAsync(requestMessage);
             if (httpResponse.IsSuccessStatusCode)
             {
@@ -58,14 +56,14 @@ namespace whManagerUI.Services
             return null;
         }
 
-        public async Task<Result> AddCar(Car car, SessionHelper sessionHelper)
+        public async Task<Result> AddCar(Car car, string token)
         {
             string requestEndpoint = "car";
             var payload = new StringContent(JsonConvert.SerializeObject(car), Encoding.UTF8, "application/json");
 
             var requestMessage = new HttpRequestMessage(HttpMethod.Post, requestEndpoint);
             requestMessage.Content = payload;
-            requestMessage.Headers.Authorization = new AuthenticationHeaderValue("Bearer", sessionHelper.TokenValue);
+            requestMessage.Headers.Authorization = new AuthenticationHeaderValue("Bearer", token);
 
             HttpResponseMessage httpResponse = await _httpClient.SendAsync(requestMessage);
 
@@ -92,12 +90,12 @@ namespace whManagerUI.Services
 
         }
 
-        public async Task<Result> DeleteCar(int id, SessionHelper sessionHelper)
+        public async Task<Result> DeleteCar(int id, string token)
         {
             string requestEndpoint = $"car?id={id}";
 
             var requestMessage = new HttpRequestMessage(HttpMethod.Delete, requestEndpoint);
-            requestMessage.Headers.Authorization = new AuthenticationHeaderValue("Bearer", sessionHelper.TokenValue);
+            requestMessage.Headers.Authorization = new AuthenticationHeaderValue("Bearer", token);
 
             HttpResponseMessage httpResponse = await _httpClient.SendAsync(requestMessage);
 
