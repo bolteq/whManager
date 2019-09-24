@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using whManagerAPI.Models;
@@ -9,9 +10,10 @@ using whManagerAPI.Models;
 namespace whManagerAPI.Migrations
 {
     [DbContext(typeof(WHManagerDbContext))]
-    partial class WHManagerDbContextModelSnapshot : ModelSnapshot
+    [Migration("20190924195534_Delivery changes again")]
+    partial class Deliverychangesagain
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -92,15 +94,11 @@ namespace whManagerAPI.Migrations
 
                     b.Property<int>("ItemTypeId");
 
-                    b.Property<int>("UnloadingId");
-
                     b.HasKey("Id");
 
                     b.HasIndex("DeliveryId");
 
                     b.HasIndex("ItemTypeId");
-
-                    b.HasIndex("UnloadingId");
 
                     b.ToTable("DeliveryItems");
                 });
@@ -157,11 +155,23 @@ namespace whManagerAPI.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
+                    b.Property<int>("DeliveryId");
+
+                    b.Property<int>("DeliveryItemId");
+
+                    b.Property<int>("ItemTypeId");
+
                     b.Property<DateTime>("TimeEnd");
 
                     b.Property<DateTime>("TimeStart");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("DeliveryId");
+
+                    b.HasIndex("DeliveryItemId");
+
+                    b.HasIndex("ItemTypeId");
 
                     b.ToTable("Unloadings");
                 });
@@ -195,7 +205,7 @@ namespace whManagerAPI.Migrations
                     b.ToTable("Users");
 
                     b.HasData(
-                        new { Id = 1, CompanyId = 1, DateCreated = new DateTime(2019, 9, 24, 22, 5, 55, 20, DateTimeKind.Local), EmailAddress = "admin@admin.net", PasswordHash = "TGXHb8MYONJ2ZDqsVrraQyoGe3+01iNM4coyghmMMTA=", PasswordSalt = "hGfj0Qx5a5YU2oNTMgEnhXJLQDHQ7Uvi1YCDkQ25k4Jev2sTd7qIDuT34dWVvQgMvTTzSwchvnWm1cTntC0H4g==", Role = "Administrator" }
+                        new { Id = 1, CompanyId = 1, DateCreated = new DateTime(2019, 9, 24, 21, 55, 33, 762, DateTimeKind.Local), EmailAddress = "admin@admin.net", PasswordHash = "Zj059NWwX3G9O2nBQY57D8MRR6Ajata07okxLoYdZV8=", PasswordSalt = "4RVBF2bGK/sByQfEgR7HrFG1WLUPslZZLzlmCkjXE3M4aX2weLsbR4LXucrVJip5Qh04EN6FVwVP2u2ig87JNw==", Role = "Administrator" }
                     );
                 });
 
@@ -254,11 +264,6 @@ namespace whManagerAPI.Migrations
                         .WithMany()
                         .HasForeignKey("ItemTypeId")
                         .OnDelete(DeleteBehavior.Cascade);
-
-                    b.HasOne("whManagerLIB.Models.Unloading", "Unloading")
-                        .WithMany()
-                        .HasForeignKey("UnloadingId")
-                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("whManagerLIB.Models.Trailer", b =>
@@ -266,6 +271,24 @@ namespace whManagerAPI.Migrations
                     b.HasOne("whManagerLIB.Models.Company", "Company")
                         .WithMany()
                         .HasForeignKey("CompanyId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("whManagerLIB.Models.Unloading", b =>
+                {
+                    b.HasOne("whManagerLIB.Models.Delivery", "Delivery")
+                        .WithMany("Unloadings")
+                        .HasForeignKey("DeliveryId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("whManagerLIB.Models.DeliveryItem", "DeliveryItem")
+                        .WithMany()
+                        .HasForeignKey("DeliveryItemId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("whManagerLIB.Models.DeliveryItemType", "ItemType")
+                        .WithMany()
+                        .HasForeignKey("ItemTypeId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 

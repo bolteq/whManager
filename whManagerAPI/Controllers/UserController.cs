@@ -10,6 +10,7 @@ using whManagerLIB.Helpers;
 using whManagerLIB.Models;
 using whManagerAPI.Models;
 using Microsoft.EntityFrameworkCore;
+using System.Security.Claims;
 
 namespace whManagerAPI.Controllers
 {
@@ -43,6 +44,10 @@ namespace whManagerAPI.Controllers
             bool isSpedytor = HttpContext.User.Claims.Any(c => c.Value == RoleHelper.Spedytor);
             bool isKierowca = HttpContext.User.Claims.Any(c => c.Value == RoleHelper.Kierowca);
 
+            var username = HttpContext.User.Claims
+                .Where(c => c.Type == ClaimTypes.Name)
+                .Select(c => c.Value)
+                .FirstOrDefault();
             //Pobierz użytkownika z bazy danych
             var user = _context
                 .Users
@@ -50,13 +55,13 @@ namespace whManagerAPI.Controllers
                 .FirstOrDefault(u => u.Id == id);
 
             //Jeśli wywoła spedytor, a użytkownik nie należy do jego firmy zwróc Unathorized
-            if(isSpedytor && user.CompanyId != companyId)
+            if (isSpedytor && user.CompanyId != companyId)
             {
                 return Unauthorized();
             }
 
             //Jeśli wywoła kierowca, a użytkownik nie jest nim samym zwróć Unathorized
-            if(isKierowca && user.EmailAddress != User.Identity.Name)
+            if (isKierowca && user.EmailAddress != username)
             {
                 return Unauthorized();
             }

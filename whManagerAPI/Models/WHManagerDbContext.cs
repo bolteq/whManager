@@ -53,7 +53,37 @@ namespace whManagerAPI.Models
                     Name = "BTH Import Stal"
                 });
 
+            //Przykładowa dostawa
 
+            //builder.Entity<Delivery>().HasData(
+            //    new Delivery
+            //    {
+            //        Id = 1,
+            //        CarId = 36,
+            //        CompanyId = 1,
+            //        DeliveryFrom = "Tarnów",
+            //        TrailerId = null,
+            //        DeliveryItems = new List<DeliveryItem>
+            //        {
+            //            new DeliveryItem
+            //            {
+            //                Id = 1,
+            //                Count = 1000,
+            //                ItemTypeId = 1,
+            //                DeliveryId = 1,
+            //            }
+            //        },
+            //        Unloadings = new List<Unloading>
+            //        {
+            //            new Unloading
+            //            {
+            //                DeliveryId = 1,
+            //                TimeStart = DateTime.Now,
+            //                TimeEnd = DateTime.Now.AddDays(1),
+            //                DeliveryItemId = 1,
+            //            }
+            //        }
+            //    }) ;
             //Podstawowe role
             builder.Entity<Role>().HasData(
                 new {

@@ -9,11 +9,9 @@ namespace whManagerLIB.Models
     {
         [Key]
         public int Id { get; set; }
+        [Required]
         public DateTime TimeStart { get; set; }
+        [Required]
         public DateTime TimeEnd { get; set; }
-        public int DeliveryId { get; set; }
-        public Delivery Delivery { get; set; }
-        public int DeliveryItemId { get; set; }
-        public DeliveryItem DeliveryItem { get; set; }
     }
 }
