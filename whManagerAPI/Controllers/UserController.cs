@@ -56,7 +56,7 @@ namespace whManagerAPI.Controllers
                 return BadRequest("Nie możesz utworzyć użytkownika o uprawnieniach wyższych niż Kierowca");
             }
 
-            var result = await _userService.Register(userData.EmailAddress, userData.PasswordHash, userData.Role);
+            var result = await _userService.Register(userData);
             if(!result.Status)
             {
                 return BadRequest(result.Message);

@@ -5,15 +5,14 @@ using System.Text;
 
 namespace whManagerLIB.Models
 {
-    public class Unloading
+    public class DeliveryItem
     {
         [Key]
         public int Id { get; set; }
-        public DateTime TimeStart { get; set; }
-        public DateTime TimeEnd { get; set; }
+        public int ItemTypeId { get; set; }
+        public float Count { get; set; }
+        public DeliveryItemType ItemType { get; set; }
         public int DeliveryId { get; set; }
         public Delivery Delivery { get; set; }
-        public int DeliveryItemId { get; set; }
-        public DeliveryItem DeliveryItem { get; set; }
     }
 }

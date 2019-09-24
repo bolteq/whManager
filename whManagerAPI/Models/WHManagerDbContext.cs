@@ -23,7 +23,8 @@ namespace whManagerAPI.Models
         public DbSet<User> Users { get; set; }
         public DbSet<Role> Roles { get; set; }
         public DbSet<Delivery> Deliveries { get; set; }
-        public DbSet<DeliveryType> DeliveryTypes { get; set; }
+        public DbSet<DeliveryItem> DeliveryItems { get; set; }
+        public DbSet<DeliveryItemType> DeliveryItemTypes { get; set; }
         public DbSet<Unloading> Unloadings { get; set; }
         public DbSet<Car> Cars { get; set; }
         public DbSet<Company> Companies { get; set; }

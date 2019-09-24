@@ -10,6 +10,6 @@ namespace whManagerLIB.Models
         public string DeliveryFrom { get; set; }
         public ICollection<Car> Cars {get;set;}
         public ICollection<Trailer> Trailers { get; set; }
-        public ICollection<DeliveryType> DeliveryTypes { get; set; }
+        public ICollection<DeliveryItem> DeliveryItems { get; set; }
     }
 }

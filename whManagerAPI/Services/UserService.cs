@@ -61,9 +61,8 @@ namespace whManagerAPI.Services
             return user;            
         }
 
-        public async Task<Result> Register(string emailAddress, string password, string role)
+        public async Task<Result> Register(User user)
         {
-            var newUser = new User();
             var emailValidator = new EmailAddressAttribute();
             var result = new Result();
 
@@ -71,7 +70,7 @@ namespace whManagerAPI.Services
             try
             {
                 //Jeśli Email jest nieprawdiłowy zwróć błąd
-                if (!emailValidator.IsValid(emailAddress))
+                if (!emailValidator.IsValid(user.EmailAddress))
                 {
                     result.Status = false;
                     result.Message = "Uncorrect E-Mail Address";
@@ -79,7 +78,8 @@ namespace whManagerAPI.Services
                     return result;
                 }
                 //Jeśli użytkownik z takim adresem E-Mail już istnieje, zwróć błąd
-                if (await _context.Users.AnyAsync(u => u.EmailAddress == emailAddress))
+                bool bExists = await _context.Users.AnyAsync(u => u.EmailAddress == user.EmailAddress);
+                if (bExists)
                 {
                     result.Status = false;
                     result.Message = "User already exists";
@@ -87,7 +87,7 @@ namespace whManagerAPI.Services
                     return result;
                 }
                 //Jeśli wybrana rola nie istnieje, zwróć błąd
-                if (!await _context.Roles.AnyAsync(r => r.Name == role))
+                if (!await _context.Roles.AnyAsync(r => r.Name == user.Role))
                 {
                     result.Status = false;
                     result.Message = "Requested role doesn't exist";
@@ -95,17 +95,15 @@ namespace whManagerAPI.Services
                     return result;
                 }
 
-                newUser.PasswordSalt = _passwordCrypter.CreateSalt();
-                newUser.PasswordHash = _passwordCrypter.CreateHash(password, newUser.PasswordSalt);
-                newUser.EmailAddress = emailAddress;
-                newUser.DateCreated = DateTime.Now;
-                newUser.Role = role;
+                user.PasswordSalt = _passwordCrypter.CreateSalt();
+                user.PasswordHash = _passwordCrypter.CreateHash(user.PasswordHash, user.PasswordSalt);
+                user.DateCreated = DateTime.Now;
 
-                _context.Users.Attach(newUser);
+                _context.Users.Attach(user);
                 await _context.SaveChangesAsync();
 
                 result.Status = true;
-                result.Message = $"User {newUser.EmailAddress} created";
+                result.Message = $"User {user.EmailAddress} created";
 
                 return result;
             }
