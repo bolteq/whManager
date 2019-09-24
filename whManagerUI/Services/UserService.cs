@@ -19,6 +19,43 @@ namespace whManagerUI.Services
         {
             _httpClient = httpClient;
         }
+
+        public async Task<User> GetUser (int id, string token)
+        {
+            string requestEndpoint = $"user/{id}";
+
+            var requestMessage = new HttpRequestMessage(HttpMethod.Get, requestEndpoint);
+            requestMessage.Headers.Authorization = new AuthenticationHeaderValue("Bearer", token);
+            var httpResponse = await _httpClient.SendAsync(requestMessage);
+
+            if (httpResponse.IsSuccessStatusCode)
+            {
+                var data = await httpResponse.Content.ReadAsStringAsync();
+                var user = JsonConvert.DeserializeObject<User>(data);
+
+                return user;
+            }
+
+            return null;
+        }
+
+        public async Task<List<User>> GetUsers (string token)
+        {
+            string requestEndpoint = "user";
+
+            var requestMessage = new HttpRequestMessage(HttpMethod.Get, requestEndpoint);
+            requestMessage.Headers.Authorization = new AuthenticationHeaderValue("Bearer", token);
+            var httpResponse = await _httpClient.SendAsync(requestMessage);
+            if (httpResponse.IsSuccessStatusCode)
+            {
+                var data = await httpResponse.Content.ReadAsStringAsync();
+                var users = JsonConvert.DeserializeObject<List<User>>(data);
+
+                return users;
+            }
+
+            return null;
+        }
         public async Task<User> Login(User user)
         {
             string requestEndpoint = "user/login";

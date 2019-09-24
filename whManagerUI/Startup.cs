@@ -41,6 +41,7 @@ namespace whManagerUI
             ServicePointManager.FindServicePoint(httpClient.BaseAddress).ConnectionLeaseTimeout = 60000; // sixty seconds
 
             services.AddSingleton<HttpClient>(httpClient);
+            services.AddScoped<DeliveryItemTypeService>();
             services.AddScoped<UserService>();
             services.AddScoped<CarService>();
             services.AddScoped<CompanyService>();

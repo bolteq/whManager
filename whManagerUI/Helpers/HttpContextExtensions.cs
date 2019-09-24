@@ -14,6 +14,11 @@ namespace whManagerUI.Helpers
             return httpContext.Session.GetString(SessionHelper.Token);
         }
 
+        public static string GetRole(this HttpContext httpContext)
+        {
+            return httpContext.Session.GetString(SessionHelper.Role);
+        }
+
         public static void SetSession(this HttpContext httpContext, User user)
         {
             httpContext.Session.SetString(SessionHelper.Username, user.EmailAddress);

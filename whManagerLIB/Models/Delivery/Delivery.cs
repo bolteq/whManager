@@ -8,8 +8,8 @@ namespace whManagerLIB.Models
     {
         public int Id { get; set; }
         public string DeliveryFrom { get; set; }
-        public ICollection<Car> Cars {get;set;}
-        public ICollection<Trailer> Trailers { get; set; }
-        public ICollection<DeliveryItem> DeliveryItems { get; set; }
+        public Car Car {get;set;}
+        public Trailer Trailer { get; set; }
+        public List<DeliveryItem> DeliveryItems { get; set; }
     }
 }
