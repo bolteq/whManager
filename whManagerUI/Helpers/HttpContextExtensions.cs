@@ -27,5 +27,18 @@ namespace whManagerUI.Helpers
             httpContext.Session.SetString(SessionHelper.Role, user.Role);
         }
 
+        public static User GetUserFromSession(this HttpContext httpContext)
+        {
+            var user = new User()
+            {
+                EmailAddress = httpContext.Session.GetString(SessionHelper.Username),
+                CompanyId = int.Parse(httpContext.Session.GetString(SessionHelper.CompanyId)),
+                Role = httpContext.Session.GetString(SessionHelper.Role),
+                Token = httpContext.Session.GetString(SessionHelper.Token)
+            };
+
+            return user;
+        }
+
     }
 }
