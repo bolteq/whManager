@@ -1,0 +1,72 @@
+﻿@page
+@model whManagerUI.Pages.Delivery.CreateModel
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h2>Tworzenie dostawy</h2>
+
+<p>
+    Samochód:
+    @if (Model.NewDelivery.Car.PlateNumber != null)
+    {
+        @Model.NewDelivery.Car.PlateNumber
+        <button>Zmień samochód</button>
+    }
+    else
+    {
+        <button>Zmień samochód</button>
+    }
+</p>
+
+<form method="post">
+    <select name="carId" asp-items="Model.carOptions"></select>
+    <button type="submit" class="btn btn-default">Submit</button>
+
+<p>
+    Kierowca:
+    @if (Model.NewDelivery.User != null)
+    {
+        @Model.NewDelivery.User.EmailAddress
+        <button>Zmień kierowcę</button>
+    }
+    else
+    {
+        <button>Zmień kierowcę</button>
+    }
+</p>
+
+    <select name="userId" asp-items="Model.UserOptions"></select>
+    <button type="submit" class="btn btn-default">Submit</button>
+</form>
+
+<p>
+    <h3>Dostarczane przedmioty</h3>
+    <table class="table table-striped table-bordered table-responsive">
+        <thead>
+            <tr>
+                <th scope="col">Typ</th>
+                <th scope="col">Ilość</th>
+                <th scope="col">Start</th>
+                <th scope="col">Koniec</th>
+                <th scope="col" colspan="2">Akcja</th>
+            </tr>
+        </thead>
+        <tbody>
+            @*@foreach (var item in Model.NewDelivery.DeliveryItems)
+            {
+                <tr>
+                    <td>@item.ItemType.Name</td>
+                    <td>@item.Count</td>
+                    <td>@item.Unloading.TimeStart</td>
+                    <td>@item.Unloading.TimeEnd</td>
+                    <td>Usuń</td>
+                    <td>Zmień</td>
+                </tr>
+            }*@
+        </tbody>
+    </table>
+<p><button>Dodaj nowy</button></p>
+<p><button>Zatwierdź</button></p>
+</p>
+
