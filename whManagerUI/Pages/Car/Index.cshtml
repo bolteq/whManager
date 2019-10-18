@@ -3,44 +3,65 @@
 @{
     ViewData["Title"] = "Index";
 }
-
-<h2>Lista samochodów:</h2>
-
-<table class="table table-striped table-bordered table-responsive">
-    <thead>
-        <tr>
-            <th scope="col">Plate Number</th>
-            <th scope="col">Brand</th>
-            <th scope="col">Model</th>
-            <th scope="col">Weight</th>
-            <th scope="col">Capacity</th>
-            <th scope="col" colspan="2">Action</th>
-        </tr>
-    </thead>
-    <tbody>
-        @if (Model.Cars != null)
-        {
-            @foreach (var item in Model.Cars)
+<div class="container">
+    <h2>Lista samochodów:</h2>
+    <table class="table table-striped table-bordered table-responsive">
+        <thead>
+            <tr>
+                <th scope="col">Plate Number</th>
+                <th scope="col">Brand</th>
+                <th scope="col">Model</th>
+                <th scope="col">Weight</th>
+                <th scope="col">Capacity</th>
+                <th scope="col" colspan="2">Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (Model.Cars != null)
             {
-                <tr>
-                    <td>@item.PlateNumber</td>
-                    <td>@item.Brand</td>
-                    <td>@item.Model</td>
-                    <td>@item.Weight</td>
-                    <td>@item.Capacity</td>
-                    <td><a href="/car/delete?id=@item.Id">Delete</a></td>
-                    <td><a href="/car/edit?id=@item.Id">Edit</a></td>
-                </tr>
+                @foreach (var item in Model.Cars)
+                {
+                    <tr>
+                        <td>@item.PlateNumber</td>
+                        <td>@item.Brand</td>
+                        <td>@item.Model</td>
+                        <td>@item.Weight</td>
+                        <td>@item.Capacity</td>
+                        <td><a href="/car/delete?id=@item.Id">Delete</a></td>
+                        <td><a href="/car/edit?id=@item.Id">Edit</a></td>
+                    </tr>
 
+                }
             }
-        }
 
-    </tbody>
-</table>
-
-<form method="post" class="form-inline">
-    <div class="form-group">
-        <input asp-for="Car.PlateNumber" class="form-control" />
+        </tbody>
+    </table>
+    <div class="row col-md-4">
+        <div id="addNew">
+            <h2>Dodaj samochód:</h2>
+            <form method="post" class="form">
+                <div class="form-group">
+                    <label asp-for="Car.PlateNumber">Numer tablicy</label>
+                    <input asp-for="Car.PlateNumber" class="form-control" />
+                </div>
+                <div class="form-group">
+                    <label asp-for="Car.Brand">Marka</label>
+                    <input asp-for="Car.Brand" class="form-control" />
+                </div>
+                <div class="form-group">
+                    <label asp-for="Car.Model">Model</label>
+                    <input asp-for="Car.Model" class="form-control" />
+                </div>
+                <div class="form-group">
+                    <label asp-for="Car.Weight">Waga własna</label>
+                    <input asp-for="Car.Weight" class="form-control" />
+                </div>
+                <div class="form-group">
+                    <label asp-for="Car.Capacity">Ładowność</label>
+                    <input asp-for="Car.Capacity" class="form-control" />
+                </div>
+                <button type="submit" class="btn btn-default">Submit</button>
+            </form>
+        </div>
     </div>
-    <button type="submit" class="btn btn-default">Submit</button>
-</form> 
+</div>
