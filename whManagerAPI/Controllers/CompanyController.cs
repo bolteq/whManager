@@ -17,8 +17,8 @@ namespace whManagerAPI.Controllers
     [ApiController]
     public class CompanyController : Controller
     {
-        private readonly CompanyService _companyService;
-        public CompanyController(CompanyService companyService)
+        private readonly ICompanyService _companyService;
+        public CompanyController(ICompanyService companyService)
         {
             _companyService = companyService;
         }

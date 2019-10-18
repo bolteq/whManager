@@ -57,11 +57,12 @@
                     @if (role == RoleHelper.Administrator)
                     {
                         <li><a asp-page="/Company/Index">Firmy</a></li>
+                        <li><a asp-page="/Car/Index">Pojazdy</a></li>
                         <li><a asp-page="/User/Index">Użytkownicy</a></li>
                         <li><a asp-page="/Delivery/Index">Lista dostaw</a></li>
                         <li><a asp-page="/DeliveryItemType/Index">Typy dostaw</a></li>
                     }
-                    @if  (role == RoleHelper.Kierowca)
+                    @if (role == RoleHelper.Kierowca)
                     {
 
                     }
