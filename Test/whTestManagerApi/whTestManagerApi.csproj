@@ -18,4 +18,11 @@
     <ProjectReference Include="..\..\whManagerAPI\whManagerAPI.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Controllers\CompanyController\" />
+    <Folder Include="Controllers\DeliveryItemController\" />
+    <Folder Include="Controllers\DeliveryController\" />
+    <Folder Include="Controllers\UserController\" />
+  </ItemGroup>
+
 </Project>

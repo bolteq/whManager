@@ -9,6 +9,7 @@ using whManagerLIB.Models;
 using whManagerLIB.Helpers;
 using System;
 using System.Security.Claims;
+using whManagerAPI.Services;
 
 namespace whManagerAPI.Controllers
 {
@@ -18,11 +19,11 @@ namespace whManagerAPI.Controllers
     {
 
 
-        private readonly WHManagerDbContext _context;
+        private readonly IDeliveryService _deliveryService;
 
-        public DeliveryController(WHManagerDbContext context)
+        public DeliveryController(IDeliveryService deliveryService)
         {
-            _context = context;
+            _deliveryService = deliveryService;
         }
 
         #region GetDelivery
@@ -31,53 +32,15 @@ namespace whManagerAPI.Controllers
         [Route("api/[controller]/{id}")]
         public async Task<IActionResult> GetDelivery([FromRoute] int id)
         {
-            bool isSpedytor = HttpContext
-                .User
-                .Claims
-                .Any(c => c.Value == RoleHelper.Spedytor);
+            var delivery = await _deliveryService.GetDelivery(id);
 
-            bool isKierowca = HttpContext
-                .User
-                .Claims
-                .Any(c => c.Value == RoleHelper.Kierowca);
-
-            var companyId = HttpContext.User.Claims
-                    .Where(c => c.Type == MyClaims.CompanyId)
-                    .Select(c => int.Parse(c.Value))
-                    .FirstOrDefault();
-
-            var username = HttpContext.User.Claims
-                .Where(c => c.Type == ClaimTypes.Name)
-                .Select(c => c.Value)
-                .FirstOrDefault();
-
-            var delivery = await _context.Deliveries
-                                            .Include(d => d.Car)
-                                            .Include(d => d.Trailer)
-                                            .Include(d => d.Company)
-                                            .Include(d => d.User)
-                                            .Include(d => d.DeliveryItems)
-                                            .FirstOrDefaultAsync(d => d.Id == id);
-                                            
-                
-
-            if (isSpedytor && delivery.CompanyId != companyId)
+            if (delivery == null)
             {
-                return Unauthorized();
+                return BadRequest();
             }
-
-            if (isKierowca && delivery.User.EmailAddress != username)
-            {
-                return Unauthorized();
-            }
-
-            try
+            else
             {
                 return Ok(delivery);
-            }
-            catch (Exception e)
-            {
-                return BadRequest(e.ToString());
             }
         }
         #endregion
@@ -89,39 +52,9 @@ namespace whManagerAPI.Controllers
         [Route("api/[controller]")]
         public IActionResult GetDeliveries()
         {
-            bool isSpedytor = HttpContext.User.Claims.Any(c => c.Value == RoleHelper.Spedytor);
-            var companyId = HttpContext.User.Claims
-                    .Where(c => c.Type == MyClaims.CompanyId)
-                    .Select(c => int.Parse(c.Value))
-                    .FirstOrDefault();
+            var deliveries = _deliveryService.GetDeliveries();
 
-            switch (isSpedytor)
-            {
-                case true:
-                    var companyDeliveries = _context
-                        .Deliveries
-                        .Where(d => d.CompanyId == companyId)
-                            .Include(d => d.Car)
-                            .Include(d => d.Trailer)
-                            .Include(d => d.Company)
-                            .Include(d => d.User)
-                            .Include(d => d.DeliveryItems);
-                  
-
-                    return Ok(companyDeliveries);
-                case false:
-                    var allDeliveries = _context
-                        .Deliveries
-                        .Include(d => d.Car)
-                        .Include(d => d.Trailer)
-                        .Include(d => d.Company)
-                        .Include(d => d.User)
-                        .Include(d => d.DeliveryItems);
-
-                    return Ok(allDeliveries);
-            }
-
-            return BadRequest();
+            return Ok(deliveries);
         }
         #endregion
 
@@ -131,46 +64,36 @@ namespace whManagerAPI.Controllers
         [Route("api/[controller]")]
         public async Task<IActionResult> SetDelivery([FromBody] Delivery delivery)
         {
-            var companyId = HttpContext.User.Claims
-                .Where(c => c.Type == MyClaims.CompanyId)
-                .Select(c => int.Parse(c.Value))
-                .FirstOrDefault();
+            var newDelivery = await _deliveryService.SetDelivery(delivery);
 
-            bool bExists = await _context
-                .Deliveries
-                .AnyAsync(d => d.Id == delivery.Id);
-
-            try
+            if (newDelivery == null)
             {
-                switch (bExists)
-                {
-                    case true:
-                        if(delivery.CompanyId != companyId)
-                        {
-                            return Unauthorized();
-                        }
-                        _context
-                            .Deliveries
-                            .Update(delivery);
-                        await _context.SaveChangesAsync();
-
-                        return Ok();
-                    case false:
-                        delivery.CompanyId = companyId;
-
-                        _context.Deliveries.Add(delivery);
-                        await _context.SaveChangesAsync();
-
-                        return Ok();
-                }
+                return BadRequest();
             }
-            catch(Exception e)
+            else
             {
-                return BadRequest(e.ToString());
+                return Ok(newDelivery);
             }
-            return BadRequest();
         }
         #endregion
-    }
 
+        #region DeleteDelivery
+        [Authorize(Roles = RoleHelper.SpedytorAdministrator)]
+        [HttpDelete]
+        [Route("api/[controller]")]
+        public async Task<IActionResult> DeleteDelivery(int id)
+        {
+            var bDeliveryDeleted = await _deliveryService.DeleteDelivery(id);
+
+            if (bDeliveryDeleted)
+            {
+                return Ok();
+            }
+            else
+            {
+                return BadRequest();
+            }
+        }
+    }
+    #endregion
 }

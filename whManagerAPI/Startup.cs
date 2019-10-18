@@ -62,6 +62,7 @@ namespace whManagerAPI
             services.AddScoped<ICarService, CarService>();
             services.AddScoped<ICompanyService, CompanyService>();
             services.AddScoped<IUserService, UserService>();
+            services.AddScoped<IDeliveryService, DeliveryService>();
             services.AddScoped<PasswordCrypter>();
             services.AddDbContext<WHManagerDbContext>(options => options.UseNpgsql(Configuration.GetConnectionString("Dev")));
         }

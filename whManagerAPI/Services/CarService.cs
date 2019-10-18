@@ -165,16 +165,10 @@ namespace whManagerAPI.Services
                             .Select(c => int.Parse(c.Value))
                             .FirstOrDefault();
 
-            if (car == null)
-            {
-                return false;
-            }
+            if (car == null) return false;
 
             //Jeśli użytkownik jest spedytorem i car nie jest z jego firmy, zwróc BadRequst
-            if (isSpedytor && companyId != car.companyId)
-            {
-                return false;
-            }
+            if (isSpedytor && companyId != car.companyId) return false;
 
             _context
                 .Cars
