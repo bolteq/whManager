@@ -36,7 +36,7 @@ namespace whManagerUI.Pages.Company
 
             await _userService.Register(User, token);
 
-            return Page();
+            return RedirectToPage("/user/index");
         }
 
     }

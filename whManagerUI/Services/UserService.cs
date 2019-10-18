@@ -102,5 +102,26 @@ namespace whManagerUI.Services
             }
             
         }
+
+        public async Task<bool> DeleteUser(int id, string token)
+        {
+            string requestEndpoint = $"user?id={id}";
+
+            var requestMessage = new HttpRequestMessage(HttpMethod.Delete, requestEndpoint);
+            requestMessage.Headers.Authorization = new AuthenticationHeaderValue("Bearer", token);
+
+            
+            HttpResponseMessage httpResponseMessage = await _httpClient.SendAsync(requestMessage);
+
+            if(httpResponseMessage.IsSuccessStatusCode)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+
+        }
     }
 }

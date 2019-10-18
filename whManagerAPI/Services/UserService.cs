@@ -23,6 +23,7 @@ namespace whManagerAPI.Services
         Task<bool> Register(User user);
         Task<User> GetUser(int id);
         IQueryable<User> GetUsers();
+        Task<bool> DeleteUser(int id);
     }
     public class UserService : IUserService
     {
@@ -216,5 +217,48 @@ namespace whManagerAPI.Services
 
         }
         #endregion
+
+        #region DeleteUser
+        public async Task<bool> DeleteUser(int id)
+        {
+
+            bool isSpedytor = _httpContextAccessor
+                            .HttpContext
+                            .User
+                            .Claims
+                            .Any(c => c.Value == RoleHelper.Spedytor);
+
+            var user = await _context
+                            .Users
+                            .FirstOrDefaultAsync(c => c.Id == id);
+
+            var companyId = _httpContextAccessor
+                            .HttpContext
+                            .User
+                            .Claims
+                            .Where(c => c.Type == MyClaims.CompanyId)
+                            .Select(c => int.Parse(c.Value))
+                            .FirstOrDefault();
+
+            if (user == null)
+            {
+                return false;
+            }
+
+            //Jeśli użytkownik jest spedytorem i car nie jest z jego firmy, zwróc BadRequst
+            if (isSpedytor && companyId != user.CompanyId)
+            {
+                return false;
+            }
+
+            _context
+                .Users
+                .Remove(user);
+
+            await _context.SaveChangesAsync();
+
+            return true;
+        }
+#endregion
     }
 }

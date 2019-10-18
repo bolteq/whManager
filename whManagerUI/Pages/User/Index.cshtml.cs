@@ -15,6 +15,7 @@ namespace whManagerUI.Pages.User
 
         [BindProperty]
         public List<whManagerLIB.Models.User> Users { get; set; }
+        public string CompanyId { get; set; }
 
         public IndexModel(UserService userService)
         {
@@ -25,6 +26,7 @@ namespace whManagerUI.Pages.User
         {
             var token = HttpContext.GetToken();
             var bToken = String.IsNullOrEmpty(token);
+            CompanyId = HttpContext.GetCompanyId();
 
             if (bToken)
             {

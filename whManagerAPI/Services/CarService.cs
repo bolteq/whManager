@@ -50,6 +50,7 @@ namespace whManagerAPI.Services
             //Pobierz samochód z bazy danych
             var car = await _context
                             .Cars
+                            .Include(c => c.Company)
                             .FirstOrDefaultAsync(c => c.Id == id);
 
             //Jeśli użytkownik jest spedytorem, a samochód nie należy od jego firmy, nie zwracaj nic.
@@ -81,13 +82,16 @@ namespace whManagerAPI.Services
 
                 var companyCars = _context
                                 .Cars
+                                .Include(c => c.Company)
                                 .Where(c => c.companyId == companyId);
 
                 return await companyCars.ToListAsync();
             }
             else
             {
-                var allCars = _context.Cars;
+                var allCars = _context
+                    .Cars
+                    .Include(c => c.Company);
                 return await allCars.ToListAsync();
             }
         }

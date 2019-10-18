@@ -32,7 +32,7 @@ namespace whManagerAPI.Controllers
         [HttpGet]
         [Route("api/[controller]/{id}")]
 
-        public IActionResult GetUser([FromRoute] int id)
+        public async Task<IActionResult> GetUser([FromRoute] int id)
         {
             var user = await _userService.GetUser(id);
 
@@ -108,6 +108,25 @@ namespace whManagerAPI.Controllers
                 return BadRequest();
             }
 
+        }
+        #endregion
+
+        #region DeleteUser
+        [Authorize(Roles = RoleHelper.SpedytorAdministrator)]
+        [HttpDelete]
+        [Route("api/[controller]")]
+        public async Task<IActionResult> DeleteUser(int id)
+        {
+            var bUserDeleted = await _userService.DeleteUser(id);
+
+            if (bUserDeleted)
+            {
+                return Ok();
+            }
+            else
+            {
+                return BadRequest();
+            }
         }
         #endregion
     }

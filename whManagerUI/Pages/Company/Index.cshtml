@@ -3,39 +3,49 @@
 @{
     ViewData["Title"] = "Index";
 }
+    <div class="container">
+        <h2>Lista firm:</h2>
+        <table class="table table-striped table-bordered table-responsive">
+            <thead>
+                <tr>
+                    <th scope="col">Name</th>
+                    <th scope="col">Address</th>
+                    <th scope="col" colspan="2">Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (Model.Companies != null)
+                {
+                    @foreach (var item in Model.Companies)
+                    {
+                        <tr>
+                            <td>@item.Name</td>
+                            <td>@item.Address</td>
+                            <td><a href="/company/AddUserSpedytor?id=@item.Id">Dodaj konto spedytora</a></td>
+                            <td><a href="/company/AddUserDriver?id=@item.Id">Dodaj konto kierowcy</a></td>
+                        </tr>
 
-<h2>Lista firm:</h2>
+                    }
+                }
 
-<table class="table table-striped table-bordered table-responsive">
-    <thead>
-        <tr>
-            <th scope="col">Name</th>
-            <th scope="col">Address</th>
-            <th scope="col" colspan="2">Action</th>
-        </tr>
-    </thead>
-    <tbody>
-        @if (Model.Companies != null)
-        {
-            @foreach (var item in Model.Companies)
-            {
-        <tr>
-            <td>@item.Name</td>
-            <td>@item.Address</td>
-            <td><a href="/company/AddUserSpedytor?id=@item.Id">Dodaj konto spedytora</a></td>
-            <td><a href="/company/AddUserDriver?id=@item.Id">Dodaj konto kierowcy</a></td>
-        </tr>
-
-            }
-        }
-
-    </tbody>
-</table>
-
-<form method="post" class="form-inline">
-    <div class="form-group">
-        <input asp-for="Company.Name" class="form-control" />
-        <input asp-for="Company.Address" class="form-control" />
-    </div>
-    <button type="submit" class="btn btn-default">Submit</button>
-</form> 
+            </tbody>
+        </table>
+        <div class="row col-md-4">
+            <div id="addCompany">
+                <h2>Dodaj firme</h2>
+                <form method="post" class="form">
+                    <div class="form-group">
+                        <label asp-for="Company.Name">Nazwa</label>
+                        <input asp-for="Company.Name" class="form-control" />
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Company.Address">Adres</label>
+                        <input asp-for="Company.Address" class="form-control" />
+                    </div>
+                    <div class="form-group">
+                        <button type="submit" class="btn btn-default">Dodaj</button>
+                    </div>
+                </form>
+                </div>
+            </div>
+        </div>
