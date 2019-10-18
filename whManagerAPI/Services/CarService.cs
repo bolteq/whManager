@@ -14,7 +14,8 @@ namespace whManagerAPI.Services
     public interface ICarService
     {
         Task<Car> GetCar(int id);
-        IQueryable<Car> GetCars();
+
+        Task<IList<Car>> GetCars();
         Task<Car> AddCar(Car car);
         Task<bool> DeleteCar(int id);
     }
@@ -64,32 +65,31 @@ namespace whManagerAPI.Services
         #endregion
 
         #region GetCars
-        public IQueryable<Car> GetCars()
+        public async Task<IList<Car>> GetCars()
         {
             //Sprawdź, czy użytkownik jest spedytorem
             bool isSpedytor = _httpContextAccessor.HttpContext.User.Claims.Any(c => c.Value == RoleHelper.Spedytor);
 
 
             //Jeśli jest spedytorem, zwróc tylko samochody należącego do jego firmy, jeśli nie to wszystkie
-            switch (isSpedytor)
+            if (isSpedytor)
             {
-                case true:
-                    var companyId = _httpContextAccessor.HttpContext.User.Claims
-                                    .Where(c => c.Type == MyClaims.CompanyId)
-                                    .Select(c => int.Parse(c.Value))
-                                    .FirstOrDefault();
+                var companyId = _httpContextAccessor.HttpContext.User.Claims
+                                .Where(c => c.Type == MyClaims.CompanyId)
+                                .Select(c => int.Parse(c.Value))
+                                .FirstOrDefault();
 
-                    var companyCars = _context
-                                    .Cars
-                                    .Where(c => c.companyId == companyId);
+                var companyCars = _context
+                                .Cars
+                                .Where(c => c.companyId == companyId);
 
-                    return companyCars;
-                case false:
-                    var allCars = _context.Cars;
-                    return allCars;
+                return await companyCars.ToListAsync();
             }
-
-            return null;
+            else
+            {
+                var allCars = _context.Cars;
+                return await allCars.ToListAsync();
+            }
         }
 
         #endregion

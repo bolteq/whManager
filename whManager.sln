@@ -7,10 +7,14 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "whManagerAPI", "whManagerAP
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "whManagerLIB", "whManagerLIB\whManagerLIB.csproj", "{7F29ABD6-F4A2-4151-A069-279917B2F2FA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "whManagerUI", "whManagerUI\whManagerUI.csproj", "{01656CD9-44BE-4CAD-A056-76744378624C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "whManagerUI", "whManagerUI\whManagerUI.csproj", "{01656CD9-44BE-4CAD-A056-76744378624C}"
 	ProjectSection(ProjectDependencies) = postProject
 		{7F29ABD6-F4A2-4151-A069-279917B2F2FA} = {7F29ABD6-F4A2-4151-A069-279917B2F2FA}
 	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Test", "Test", "{F321228F-FAB7-4708-8E4E-3559ACCBD850}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "whTestManagerApi", "Test\whTestManagerApi\whTestManagerApi.csproj", "{9995937F-D46F-40A1-BDA3-0A5C0F1CABAA}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -30,9 +34,16 @@ Global
 		{01656CD9-44BE-4CAD-A056-76744378624C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{01656CD9-44BE-4CAD-A056-76744378624C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{01656CD9-44BE-4CAD-A056-76744378624C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9995937F-D46F-40A1-BDA3-0A5C0F1CABAA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9995937F-D46F-40A1-BDA3-0A5C0F1CABAA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9995937F-D46F-40A1-BDA3-0A5C0F1CABAA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9995937F-D46F-40A1-BDA3-0A5C0F1CABAA}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{9995937F-D46F-40A1-BDA3-0A5C0F1CABAA} = {F321228F-FAB7-4708-8E4E-3559ACCBD850}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {953AC413-0B71-45A6-B63D-D6D688644EFB}

@@ -16,7 +16,7 @@ namespace whManagerAPI.Controllers
     public class CarController : Controller
     {
         private readonly ICarService _carService;
-        public CarController (ICarService carService)
+        public CarController(ICarService carService)
         {
             _carService = carService;
         }
@@ -28,7 +28,7 @@ namespace whManagerAPI.Controllers
         {
             var car = await _carService.GetCar(id);
 
-            if(car == null)
+            if (car == null)
             {
                 return BadRequest();
             }
@@ -39,9 +39,9 @@ namespace whManagerAPI.Controllers
         [Authorize(Roles = RoleHelper.SpedytorAdministrator)]
         [HttpGet]
         [Route("api/[controller]")]
-        public IActionResult GetCars()
+        public async Task<IActionResult> GetCars()
         {
-            var cars = _carService.GetCars();
+            var cars = await _carService.GetCars();
 
             return Ok(cars);
         }
@@ -54,14 +54,14 @@ namespace whManagerAPI.Controllers
         {
 
             //Jeśli model nie jest prawidłowy, zwróć 'Bad Request'
-            if(!ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
                 return BadRequest();
             }
 
             var newCar = await _carService.AddCar(car);
 
-            if(newCar == null)
+            if (newCar == null)
             {
                 return BadRequest();
             }
@@ -78,7 +78,7 @@ namespace whManagerAPI.Controllers
         {
             var bCarDeleted = await _carService.DeleteCar(id);
 
-            if(bCarDeleted)
+            if (bCarDeleted)
             {
                 return Ok();
             }
