@@ -39,6 +39,9 @@ namespace whManagerAPI.Models
             builder.Entity<User>().HasData(
                 new { Id = 1,
                     EmailAddress = "admin@admin.net",
+                    Name = "Dawid",
+                    Surname = "Czyżycki",
+                    PhoneNumber = "+48535561160",
                     PasswordSalt = adminSalt,
                     PasswordHash = _passwordCrypter.CreateHash("admin", adminSalt),
                     Role = RoleHelper.Administrator,

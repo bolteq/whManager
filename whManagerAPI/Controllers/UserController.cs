@@ -19,93 +19,56 @@ namespace whManagerAPI.Controllers
     public class UserController : Controller
     {
         private readonly WHManagerDbContext _context;
-        private UserService _userService;
+        private readonly IUserService _userService;
 
-        public UserController(UserService userService, WHManagerDbContext context)
+        public UserController(IUserService userService, WHManagerDbContext context)
         {
             _userService = userService;
             _context = context;
         }
 
+        #region GetUser
         [Authorize]
         [HttpGet]
         [Route("api/[controller]/{id}")]
 
         public IActionResult GetUser([FromRoute] int id)
         {
-            //Pobierz ID firmy użytkownika z kontekstu
+            var user = await _userService.GetUser(id);
 
-            var companyId = HttpContext.User.Claims
-                .Where(c => c.Type == MyClaims.CompanyId)
-                .Select(c => int.Parse(c.Value))
-                .FirstOrDefault();
-
-            //Sprawdź czy użytkownik jest Spedytorem / Kierowcą
-            bool isSpedytor = HttpContext.User.Claims.Any(c => c.Value == RoleHelper.Spedytor);
-            bool isKierowca = HttpContext.User.Claims.Any(c => c.Value == RoleHelper.Kierowca);
-
-            var username = HttpContext.User.Claims
-                .Where(c => c.Type == ClaimTypes.Name)
-                .Select(c => c.Value)
-                .FirstOrDefault();
-            //Pobierz użytkownika z bazy danych
-            var user = _context
-                .Users
-                .Include(u => u.Company)
-                .FirstOrDefault(u => u.Id == id);
-
-            //Jeśli wywoła spedytor, a użytkownik nie należy do jego firmy zwróc Unathorized
-            if (isSpedytor && user.CompanyId != companyId)
+            if(user == null)
             {
-                return Unauthorized();
+                return BadRequest();
             }
-
-            //Jeśli wywoła kierowca, a użytkownik nie jest nim samym zwróć Unathorized
-            if (isKierowca && user.EmailAddress != username)
+            else
             {
-                return Unauthorized();
+                return Ok(user);
             }
-
-            return Ok(user);
         }
 
+        #endregion
+
+        #region GetUsers
         [Authorize(Roles = RoleHelper.SpedytorAdministrator)]
         [HttpGet]
         [Route("api/[controller]")]
 
         public IActionResult GetUsers()
         {
-            //Pobierz ID firmy użytkownika z kontekstu
-
-            var companyId = HttpContext.User.Claims
-                .Where(c => c.Type == MyClaims.CompanyId)
-                .Select(c => int.Parse(c.Value))
-                .FirstOrDefault();
-
-            //Sprawdź czy użytkownik jest Spedytorem
-            bool isSpedytor = HttpContext
-                .User
-                .Claims
-                .Any(c => c.Value == "Spedytor");
-
-            switch (isSpedytor)
+            var users = _userService.GetUsers();
+            
+            if(users == null)
             {
-                case true:
-                    var companyUsers = _context
-                        .Users
-                        .Include(u => u.Company)
-                        .Where(u => u.CompanyId == companyId);
-                    return Ok(companyUsers);
-                case false:
-                    var allUsers = _context
-                        .Users
-                        .Include(u => u.Company);
-                    return Ok(allUsers);
+                return BadRequest();
             }
-
-            return BadRequest();
+            else
+            {
+                return Ok(users);
+            }
         }
 
+        #endregion
+        #region Login
         [AllowAnonymous]
         [HttpPost]
         [Route("api/[controller]/login")]
@@ -120,7 +83,9 @@ namespace whManagerAPI.Controllers
 
             return Ok(user);
         }
+        #endregion Login
 
+        #region Register
         [Authorize(Roles = "Administrator, Spedytor")]
         [HttpPost]
         [Route("api/[controller]/register")]
@@ -132,34 +97,18 @@ namespace whManagerAPI.Controllers
                 return BadRequest();
             }
 
-            //Pobierz ID firmy użytkownika z kontekstu
+            var bRegister = await _userService.Register(user);
 
-            var companyId = HttpContext.User.Claims
-                .Where(c => c.Type == MyClaims.CompanyId)
-                .Select(c => int.Parse(c.Value))
-                .FirstOrDefault();
-
-            //Sprawdź czy użytkownik jest Spedytorem
-            bool isSpedytor = HttpContext.User.Claims.Any(c => c.Value == "Spedytor");
-
-            //Nie pozwól Spedytorowi utworzyć użytkownika:
-            // - innego niż kierowca
-            // - należącego do innej firmy
-            if (isSpedytor && (user.Role != "Kierowca" || user.CompanyId != companyId))
-            {
-                return BadRequest(Errors.InsertDataFailed);
-            }
-
-            var result = await _userService.Register(user);
-            if (!result.Status)
-            {
-                return BadRequest(result.Message);
-            }
-            else
+            if(bRegister)
             {
                 return Ok();
             }
+            else
+            {
+                return BadRequest();
+            }
 
         }
+        #endregion
     }
 }
