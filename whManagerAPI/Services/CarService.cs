@@ -112,7 +112,7 @@ namespace whManagerAPI.Services
 
             if (bExists)
             {
-                //Jeśli car istnieje, ale nie należy do firma użytkownika, zwróć BadRequest,
+                //Jeśli car istnieje, ale nie należy do firma użytkownika, zwróc null
                 //W przeciwnym wypadku zezwól na modyfikację
                 if (companyId != car.companyId)
                 {
