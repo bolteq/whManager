@@ -7,6 +7,7 @@ using Microsoft.EntityFrameworkCore;
 using whManagerAPI.Helpers;
 using whManagerLIB.Models;
 using whManagerLIB.Helpers;
+using whManagerAPI.Services;
 
 namespace whManagerAPI.Controllers
 {
@@ -14,10 +15,10 @@ namespace whManagerAPI.Controllers
     [ApiController]
     public class CarController : Controller
     {
-        private readonly WHManagerDbContext _context;
-        public CarController (WHManagerDbContext context)
+        private readonly ICarService _carService;
+        public CarController (ICarService carService)
         {
-            _context = context;
+            _carService = carService;
         }
 
         [Authorize(Roles = RoleHelper.SpedytorAdministrator)]
@@ -25,19 +26,9 @@ namespace whManagerAPI.Controllers
         [Route("api/[controller]/{id}")]
         public async Task<IActionResult> GetCar([FromRoute] int id)
         {
-            bool isSpedytor = HttpContext.User.Claims.Any(c => c.Value == RoleHelper.Spedytor);
-            var companyId = HttpContext.User.Claims
-                    .Where(c => c.Type == MyClaims.CompanyId)
-                    .Select(c => int.Parse(c.Value))
-                    .FirstOrDefault();
-
-            var car = await _context.Cars.FirstOrDefaultAsync(c => c.Id == id);
+            var car = await _carService.GetCar(id);
 
             if(car == null)
-            {
-                return BadRequest();
-            }
-            if(isSpedytor && car.companyId != companyId)
             {
                 return BadRequest();
             }
@@ -50,21 +41,9 @@ namespace whManagerAPI.Controllers
         [Route("api/[controller]")]
         public IActionResult GetCars()
         {
-            bool isSpedytor = HttpContext.User.Claims.Any(c => c.Value == RoleHelper.Spedytor); 
-            switch(isSpedytor)
-            {
-                case true:
-                    var companyId = HttpContext.User.Claims
-                        .Where(c => c.Type == MyClaims.CompanyId)
-                        .Select(c => int.Parse(c.Value))
-                        .FirstOrDefault();
-                    var companyCars = _context.Cars.Where(c => c.companyId == companyId);
-                    return Ok(companyCars);
-                case false:
-                    var allCars = _context.Cars;
-                    return Ok(allCars);
-            }
-            return BadRequest();
+            var cars = _carService.GetCars();
+
+            return Ok(cars);
         }
 
 
@@ -77,62 +56,18 @@ namespace whManagerAPI.Controllers
             //Jeśli model nie jest prawidłowy, zwróć 'Bad Request'
             if(!ModelState.IsValid)
             {
-                var result = new Result()
-                {
-                    Message = Errors.InvalidModelState,
-                    Status = false
-                };
-                return BadRequest(result);
+                return BadRequest();
             }
 
-            //Sprawdź czy car już istnieje
+            var newCar = await _carService.AddCar(car);
 
-            var bExists = _context
-                .Cars
-                .Where(c => c.Id == car.Id)
-                .Any();
-
-            //Pobierz ID firmy użytkownika z kontekstu
-
-            var companyId = HttpContext.User.Claims
-                .Where(c => c.Type == MyClaims.CompanyId)
-                .Select(c => int.Parse(c.Value))
-                .FirstOrDefault();
-
-            
-            if (bExists)
+            if(newCar == null)
             {
-                //Jeśli car istnieje, ale nie należy do firma użytkownika, zwróć BadRequest,
-                //W przeciwnym wypadku zezwól na modyfikację
-                if(companyId != car.companyId)
-                {
-                    return BadRequest();
-                }
-                _context.Cars.Update(car);
-                await _context.SaveChangesAsync();
-                var result = new Result()
-                {
-                    Message = SuccessMessages.ObjectModified,
-                    Status = true
-                };
-                return Ok(result);
+                return BadRequest();
             }
             else
             {
-                //Jeśli car nie istnieje, dodaj go do bazy danych,
-                //Ustawiając companyId na companyId użytkownika z kontekstu
-                car.companyId = companyId;
-
-                await _context.Cars.AddAsync(car);
-                await _context.SaveChangesAsync();
-
-                var result = new Result()
-                {
-                    Message = SuccessMessages.ObjectCreated,
-                    Status = true
-                };
-              
-                return Ok(result);
+                return Ok(car);
             }
         }
 
@@ -141,33 +76,16 @@ namespace whManagerAPI.Controllers
         [Route("api/[controller]")]
         public async Task<IActionResult> DeleteCar(int id)
         {
-            bool isSpedytor = HttpContext.User.Claims.Any(c => c.Value == RoleHelper.Spedytor);
+            var bCarDeleted = await _carService.DeleteCar(id);
 
-            var car = await _context
-                .Cars
-                .FirstOrDefaultAsync(c => c.Id == id);
-
-            var companyId = HttpContext.User.Claims
-                .Where(c => c.Type == MyClaims.CompanyId)
-                .Select(c => int.Parse(c.Value))
-                .FirstOrDefault();
-
-            //Jeśli car do usunięcia nie istnieje, zwróć BadRequest
-            if(car == null)
+            if(bCarDeleted)
+            {
+                return Ok();
+            }
+            else
             {
                 return BadRequest();
             }
-
-            //Jeśli użytkownik jest spedytorem i car nie jest z jego firmy, zwróc BadRequst
-            if(isSpedytor && companyId != car.companyId)
-            {
-                return BadRequest();
-            }
-
-            _context.Cars.Remove(car);
-            await _context.SaveChangesAsync();
-
-            return Ok();
         }
     }
 
