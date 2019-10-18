@@ -8,6 +8,7 @@ using whManagerAPI.Models;
 using whManagerLIB.Helpers;
 using Microsoft.EntityFrameworkCore;
 using whManagerLIB.Models;
+using whManagerAPI.Services;
 
 namespace whManagerAPI.Controllers
 {
@@ -15,37 +16,31 @@ namespace whManagerAPI.Controllers
     [ApiController]
     public class DeliveryItemTypeController : Controller
     {
-        private readonly WHManagerDbContext _context;
+        private readonly IDeliveryItemTypeService _deliveryItemTypeService;
 
-        public DeliveryItemTypeController(WHManagerDbContext context)
+        public DeliveryItemTypeController(IDeliveryItemTypeService deliveryItemTypeService)
         {
-            _context = context;
+            _deliveryItemTypeService = deliveryItemTypeService;
         }
-        [Authorize(Roles = RoleHelper.SpedytorAdministrator)]
+
+        [Authorize]
         [HttpGet]
         [Route("api/[controller]/{id}")]
         public async Task<IActionResult> GetDeliveryItemType([FromRoute] int id)
         {
-            var type = await _context
-                .DeliveryItemTypes
-                .FirstOrDefaultAsync(t => t.Id == id);
+            var type = await _deliveryItemTypeService.GetDeliveryItemType(id);
 
-            if(type == null)
-            {
-                return BadRequest();
-            }
-
+            if(type == null) return BadRequest();
             return Ok(type);
         }
 
 
-        [Authorize(Roles = RoleHelper.SpedytorAdministrator)]
+        [Authorize]
         [HttpGet]
         [Route("api/[controller]")]
         public IActionResult GetDeliveryItemTypes()
         {
-            var types = _context
-                .DeliveryItemTypes;
+            var types = _deliveryItemTypeService.GetDeliveryItemTypes();
 
             return Ok(types);
         }
@@ -53,39 +48,17 @@ namespace whManagerAPI.Controllers
         [Authorize(Roles = RoleHelper.Administrator)]
         [HttpPost]
         [Route("api/[controller]")]
-        public async Task<IActionResult> SetDeliveryItemType([FromBody] DeliveryItemType deliveryItemType)
+        public IActionResult SetDeliveryItemType([FromBody] DeliveryItemType deliveryItemType)
         {
             if(!ModelState.IsValid)
             {
                 return BadRequest();
             }
 
-            bool bExists = await _context
-                .DeliveryItemTypes
-                .AnyAsync(dit => dit.Id == deliveryItemType.Id);
+            var newType = _deliveryItemTypeService.AddDeliveryItemType(deliveryItemType);
 
-            if(bExists)
-            {
-                _context
-                    .DeliveryItemTypes
-                    .Update(deliveryItemType);
+            return Ok(newType);
 
-                await _context
-                    .SaveChangesAsync();
-
-                return Ok();
-            }
-            else
-            {
-                _context
-                    .DeliveryItemTypes
-                    .Add(deliveryItemType);
-
-                await _context
-                    .SaveChangesAsync();
-
-                return Ok();
-            }
         }
 
         [Authorize(Roles = RoleHelper.Administrator)]
@@ -93,26 +66,8 @@ namespace whManagerAPI.Controllers
         [Route("api/[controller]")]
         public async Task<IActionResult> DeleteDeliveryItemType(int id)
         {
-            var type = await _context
-                .DeliveryItemTypes
-                .FirstOrDefaultAsync(dit => dit.Id == id);
-
-            try
-            {
-                _context
-                    .DeliveryItemTypes
-                    .Remove(type);
-
-                await _context
-                    .SaveChangesAsync();
-
-                return Ok();
-            }
-            catch(Exception e)
-            {
-                return BadRequest(e.ToString());
-            }
-
+            await _deliveryItemTypeService.DeleteDeliveryItemType(id);
+            return Ok();
         }
     }
 }

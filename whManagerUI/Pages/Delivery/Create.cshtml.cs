@@ -18,28 +18,27 @@ namespace whManagerUI.Pages.Delivery
         private readonly DeliveryItemTypeService _deliveryItemTypeService;
         private readonly CarService _carService;
         private readonly UserService _userService;
+        private readonly DeliveryService _deliveryService;
 
         [BindProperty]
-        public whManagerLIB.Models.Delivery NewDelivery { get; set; } = new whManagerLIB.Models.Delivery()
-        {
-            Car = new whManagerLIB.Models.Car(),
-            User = new whManagerLIB.Models.User(),
-            Company = new whManagerLIB.Models.Company(),
-            DeliveryItems = new List<DeliveryItem>(),
-            Trailer = new Trailer(),
-        };
-        public List<SelectListItem> carOptions { get; set; } = new List<SelectListItem>();
-        public List<whManagerLIB.Models.Car> Cars { get; set; } = new List<whManagerLIB.Models.Car>();
+        public whManagerLIB.Models.Delivery NewDelivery { get; set; }
+        [BindProperty]
+        public DeliveryItem DeliveryItem { get; set; }
+        public List<SelectListItem> CarOptions { get; set; } = new List<SelectListItem>();
+        public List<whManagerLIB.Models.Car> Cars { get; set; }
         public List<whManagerLIB.Models.DeliveryItemType> DeliveryItemTypes { get; set; } = new List<whManagerLIB.Models.DeliveryItemType>();
-        public List<whManagerLIB.Models.User> Users { get; set; } = new List<whManagerLIB.Models.User>();
+        public List<SelectListItem> DeliveryItemTypesOptions { get; set; } = new List<SelectListItem>();
+        public List<whManagerLIB.Models.User> Users { get; set; }
         public List<SelectListItem> UserOptions { get; set; } = new List<SelectListItem>();
+
         public string Token { get; set; }
 
-        public CreateModel(DeliveryItemTypeService deliveryItemTypeService, CarService carService, UserService userService)
+        public CreateModel(DeliveryItemTypeService deliveryItemTypeService, CarService carService, UserService userService, DeliveryService deliveryService)
         {
             _deliveryItemTypeService = deliveryItemTypeService;
             _carService = carService;
             _userService = userService;
+            _deliveryService = deliveryService;
         }
 
         public async Task<IActionResult> OnGet()
@@ -48,8 +47,16 @@ namespace whManagerUI.Pages.Delivery
             var Token = HttpContext.GetToken();
 
             DeliveryItemTypes = await _deliveryItemTypeService.GetDeliveryItemTypes(Token);
+            DeliveryItemTypesOptions = DeliveryItemTypes.AsQueryable()
+                                .Select(dit =>
+                                new SelectListItem
+                                {
+                                    Value = dit.Id.ToString(),
+                                    Text = dit.Name
+                                }).ToList();
+
             Cars = await _carService.GetCars(Token);
-            carOptions = Cars.AsQueryable().Select(c =>
+            CarOptions = Cars.AsQueryable().Select(c =>
                                 new SelectListItem
                                 {
                                     Value = c.Id.ToString(),
@@ -64,17 +71,18 @@ namespace whManagerUI.Pages.Delivery
                                     Text = u.EmailAddress
                                 }).ToList();
 
-            return this.Page();
+            return Page();
         }
 
         public async Task<IActionResult> OnPost()
         {
             var token = HttpContext.GetToken();
+            NewDelivery.DeliveryItems = new List<DeliveryItem>();
+            NewDelivery.DeliveryItems.Add(DeliveryItem);
+            
+            await _deliveryService.AddDelivery(NewDelivery, token);
 
-            NewDelivery.Car = await _carService.GetCar(NewDelivery.CarId, token);
-            NewDelivery.User = await _userService.GetUser(NewDelivery.UserId, token);
-
-            return await this.OnGet();
+            return RedirectToPage("/Delivery/Index");
         }
     }
 }

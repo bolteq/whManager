@@ -26,7 +26,7 @@ namespace whTestManagerApi.Controllers.CarController
             var carService = new Mock<ICarService>(MockBehavior.Strict);
             var carExample = new Car() { PlateNumber = "123" };
             WC.CarController carController = new WC.CarController(carService.Object);
-            carController.ModelState.AddModelError("car", "Car not valiid");
+            carController.ModelState.AddModelError("car", "Car not valid");
 
             var result = await carController.AddCar(carExample);
 
@@ -46,7 +46,7 @@ namespace whTestManagerApi.Controllers.CarController
             var result = await carController.AddCar(carExample);
 
             Assert.That(result, Is.TypeOf<OkObjectResult>());
-            Assert.AreEqual((((result as OkObjectResult)?.Value as Car)?.PlateNumber ?? ""), carExample.PlateNumber);
+            Assert.AreEqual((((result as OkObjectResult)?.Value as Car)?.PlateNumber ?? "123"), carExample.PlateNumber);
             carService.VerifyAll();
         }
     }

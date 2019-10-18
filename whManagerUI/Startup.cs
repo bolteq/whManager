@@ -45,6 +45,7 @@ namespace whManagerUI
             services.AddScoped<UserService>();
             services.AddScoped<CarService>();
             services.AddScoped<CompanyService>();
+            services.AddScoped<DeliveryService>();
 
             services.AddSession();
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);

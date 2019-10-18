@@ -60,11 +60,11 @@ namespace whManagerAPI.Services
 
             var delivery = await _context
                                 .Deliveries
+                                .Include(d => d.User)
                                 .Include(d => d.Car)
                                 .Include(d => d.Trailer)
                                 .Include(d => d.Company)
-                                .Include(d => d.User)
-                                .Include(d => d.DeliveryItems)
+                                .Include(d => d.DeliveryItems).ThenInclude(di => di.ItemType)
                                 .FirstOrDefaultAsync(d => d.Id == id);
 
             //Jeśli użytkownik jest spedytorem, a dostawa nie należy do jego firmy nie zwracaj nic
@@ -155,16 +155,16 @@ namespace whManagerAPI.Services
 
                 case false:
                     delivery.CompanyId = companyId;
-
                     _context.Deliveries.Add(delivery);
-                    await _context.SaveChangesAsync();
 
+                    await _context.SaveChangesAsync();
                     return delivery;
             }
 
             return null;
         }
         #endregion
+
         #region DeleteDelivery
         public async Task<bool> DeleteDelivery(int id)
         {
