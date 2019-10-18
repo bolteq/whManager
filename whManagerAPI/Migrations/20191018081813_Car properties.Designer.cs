@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using whManagerAPI.Models;
@@ -9,9 +10,10 @@ using whManagerAPI.Models;
 namespace whManagerAPI.Migrations
 {
     [DbContext(typeof(WHManagerDbContext))]
-    partial class WHManagerDbContextModelSnapshot : ModelSnapshot
+    [Migration("20191018081813_Car properties")]
+    partial class Carproperties
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -187,18 +189,12 @@ namespace whManagerAPI.Migrations
                     b.Property<string>("EmailAddress")
                         .IsRequired();
 
-                    b.Property<string>("Name");
-
                     b.Property<string>("PasswordHash")
                         .IsRequired();
 
                     b.Property<string>("PasswordSalt");
 
-                    b.Property<string>("PhoneNumber");
-
                     b.Property<string>("Role");
-
-                    b.Property<string>("Surname");
 
                     b.Property<string>("Token");
 
@@ -209,7 +205,7 @@ namespace whManagerAPI.Migrations
                     b.ToTable("Users");
 
                     b.HasData(
-                        new { Id = 1, CompanyId = 1, DateCreated = new DateTime(2019, 10, 18, 12, 5, 31, 729, DateTimeKind.Local), EmailAddress = "admin@admin.net", PasswordHash = "OoZ7QbD1sl4D6MQSfmblAwP/8yavwsiuBIF3taMo5bw=", PasswordSalt = "MdB4xbSxDuAQRoHKmi2eE4F1p+VPP2HAoTGck80ktQalcvZrRl6TxY6orwU8YrhXCf0oNp1clLJ355J7JtJOkg==", Role = "Administrator" }
+                        new { Id = 1, CompanyId = 1, DateCreated = new DateTime(2019, 10, 18, 10, 18, 12, 937, DateTimeKind.Local), EmailAddress = "admin@admin.net", PasswordHash = "DhcoDv3ckMch9+ZdN3JZL0q7kYB/8CW6139aqxEgrGA=", PasswordSalt = "JYH93pnVVSyDrxRO1Zyzyd/c36xrI3wpvswqsQV7mHrVOPPelL2m4jIMulHbnnksHn2G9DqiPtc/ekR0ro212A==", Role = "Administrator" }
                     );
                 });
 

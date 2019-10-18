@@ -9,6 +9,7 @@ using whManagerAPI.Models;
 using whManagerLIB.Models;
 using Microsoft.EntityFrameworkCore;
 using whManagerLIB.Helpers;
+using whManagerAPI.Services;
 
 namespace whManagerAPI.Controllers
 {
@@ -16,10 +17,10 @@ namespace whManagerAPI.Controllers
     [ApiController]
     public class CompanyController : Controller
     {
-        private readonly WHManagerDbContext _context;
-        public CompanyController(WHManagerDbContext context)
+        private readonly ICompanyService _companyService;
+        public CompanyController(ICompanyService companyService)
         {
-            _context = context;
+            _companyService = companyService;
         }
 
         [Authorize(Roles = RoleHelper.Administrator)]
@@ -28,9 +29,7 @@ namespace whManagerAPI.Controllers
 
         public async Task<IActionResult> GetCompany([FromRoute] int id)
         {
-            var company = await _context
-                .Companies
-                .FirstOrDefaultAsync(c => c.Id == id);
+            var company = await _companyService.GetCompany(id);
 
             return Ok(company);
         }
@@ -40,7 +39,7 @@ namespace whManagerAPI.Controllers
         [Route("api/[controller]")]
         public IActionResult GetCompanies()
         {
-            var companies = _context.Companies;
+            var companies = _companyService.GetCompanies();
 
             return Ok(companies);
         }
@@ -55,21 +54,9 @@ namespace whManagerAPI.Controllers
                 return BadRequest();
             }
 
-            bool bExists = await _context.Companies.AnyAsync(c => c.Id == company.Id);
+            var newCompany = _companyService.AddCompany(company);
 
-            switch(bExists)
-            {
-                case true:
-                    _context.Companies.Update(company);
-                    await _context.SaveChangesAsync();
-                    break;
-                case false:
-                    await _context.Companies.AddAsync(company);
-                    await _context.SaveChangesAsync();
-                    break;
-            }
-
-            return Ok(company);
+            return Ok(newCompany);
         }
 
         [Authorize(Roles = RoleHelper.Administrator)]
@@ -77,18 +64,14 @@ namespace whManagerAPI.Controllers
         [Route("api/[controller]")]
         public async Task<IActionResult> DeleteCompany([FromQuery] int id)
         {
-
-            var company = await _context.Companies.FirstOrDefaultAsync(c => c.Id == id);
-
-            if(company == null)
+            if(await _companyService.DeleteCompany(id))
+            {
+                return Ok();
+            }
+            else
             {
                 return BadRequest();
             }
-
-            _context.Companies.Remove(company);
-            await _context.SaveChangesAsync();
-
-            return Ok();
         }
             
     }

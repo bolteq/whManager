@@ -4,69 +4,37 @@
     ViewData["Title"] = "Create";
 }
 
-<h2>Tworzenie dostawy</h2>
-
-<p>
-    Samochód:
-    @if (Model.NewDelivery.Car.PlateNumber != null)
-    {
-        @Model.NewDelivery.Car.PlateNumber
-        <button>Zmień samochód</button>
-    }
-    else
-    {
-        <button>Zmień samochód</button>
-    }
-</p>
-
-<form method="post">
-    <select name="carId" asp-items="Model.carOptions"></select>
-    <button type="submit" class="btn btn-default">Submit</button>
-
-<p>
-    Kierowca:
-    @if (Model.NewDelivery.User != null)
-    {
-        @Model.NewDelivery.User.EmailAddress
-        <button>Zmień kierowcę</button>
-    }
-    else
-    {
-        <button>Zmień kierowcę</button>
-    }
-</p>
-
-    <select name="userId" asp-items="Model.UserOptions"></select>
-    <button type="submit" class="btn btn-default">Submit</button>
-</form>
-
-<p>
-    <h3>Dostarczane przedmioty</h3>
-    <table class="table table-striped table-bordered table-responsive">
-        <thead>
-            <tr>
-                <th scope="col">Typ</th>
-                <th scope="col">Ilość</th>
-                <th scope="col">Start</th>
-                <th scope="col">Koniec</th>
-                <th scope="col" colspan="2">Akcja</th>
-            </tr>
-        </thead>
-        <tbody>
-            @*@foreach (var item in Model.NewDelivery.DeliveryItems)
-            {
-                <tr>
-                    <td>@item.ItemType.Name</td>
-                    <td>@item.Count</td>
-                    <td>@item.Unloading.TimeStart</td>
-                    <td>@item.Unloading.TimeEnd</td>
-                    <td>Usuń</td>
-                    <td>Zmień</td>
-                </tr>
-            }*@
-        </tbody>
-    </table>
-<p><button>Dodaj nowy</button></p>
-<p><button>Zatwierdź</button></p>
-</p>
-
+<div>
+    <h2>Tworzenie dostawy</h2>
+    <form method="post" class="form">
+        <div class="form-group">
+            <label asp-for="NewDelivery.CarId">Samochód</label>
+            <select class="form-control" asp-for="NewDelivery.CarId" asp-items="Model.CarOptions"></select>
+        </div>
+        <div class="form-group">
+            <label asp-for="NewDelivery.UserId">Kierowca</label>
+            <select class="form-control" asp-for="NewDelivery.UserId" asp-items="Model.UserOptions"></select>
+        </div>
+        <div class="form-group">
+            <label asp-for="NewDelivery.DeliveryFrom">Dostawa z</label>
+            <input asp-for="NewDelivery.DeliveryFrom" class="form-control" />
+        </div>
+        <div class="form-group">
+            <label asp-for="DeliveryItem.ItemTypeId">Typ</label>
+            <select class="form-control" asp-for="DeliveryItem.ItemTypeId" asp-items="Model.DeliveryItemTypesOptions"></select>
+        </div>
+        <div class="form-group">
+            <label asp-for="DeliveryItem.Count">Ilość</label>
+            <input asp-for="DeliveryItem.Count" class="form-control" />
+        </div>
+        <div class="form-group">
+            <label asp-for="DeliveryItem.Unloading.TimeStart">Data startu</label>
+            <input asp-for="DeliveryItem.Unloading.TimeStart" class="form-control" value="2001-01-01 01:00:00" />
+        </div>
+        <div class="form-group">
+            <label asp-for="DeliveryItem.Unloading.TimeEnd">Data końca</label>
+            <input asp-for="DeliveryItem.Unloading.TimeEnd" class="form-control" value="2001-01-01 01:00:00" />
+        </div>
+        <button type="submit" class="btn btn-default">Submit</button>
+    </form>
+</div>

@@ -4,12 +4,32 @@
     ViewData["Title"] = "AddUserDriver";
 }
 
-<h2>AddUserDriver</h2>
+<div class="container">
+    <div id="addUserDriver" class="col-md-4">
+        <h2>Dodaj kierowce</h2>
+        <form method="post" class="form">
+            <div class="form-group">
+                <label asp-for="User.Name">Imie</label>
+                <input asp-for="User.Name" class="form-control" />
+            </div>
+            <div class="form-group">
+                <label asp-for="User.Surname">Nazwisko</label>
+                <input asp-for="User.Surname" class="form-control" />
+            </div>
+            <div class="form-group">
+                <label asp-for="User.PhoneNumber">Numer telefonu</label>
+                <input asp-for="User.PhoneNumber" class="form-control" />
+            </div>
+            <div class="form-group">
+                <label asp-for="User.EmailAddress">Adres E-Mail</label>
+                <input asp-for="User.EmailAddress" class="form-control" />
+            </div>
+            <div class="form-group">
+                <label asp-for="User.PasswordHash">Haslo</label>
+                <input asp-for="User.PasswordHash" class="form-control" />
+            </div>
 
-<form method="post" class="form-inline">
-    <div class="form-group">
-        <input asp-for="User.EmailAddress" class="form-control" />
-        <input asp-for="User.PasswordHash" class="form-control" />
+            <button type="submit" class="btn btn-default">Submit</button>
+        </form>
     </div>
-    <button type="submit" class="btn btn-default">Submit</button>
-</form> 
+</div>

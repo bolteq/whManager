@@ -3,13 +3,32 @@
 @{
     ViewData["Title"] = "AddUserSpedytor";
 }
+    <div class="container">
+        <div id="addUserSpedytor" class="col-md-4">
+            <h2>Dodaj spedytora</h2>
+            <form method="post" class="form">
+                <div class="form-group">
+                    <label asp-for="User.Name">Imie</label>
+                    <input asp-for="User.Name" class="form-control" />
+                </div>
+                <div class="form-group">
+                    <label asp-for="User.Surname">Nazwisko</label>
+                    <input asp-for="User.Surname" class="form-control" />
+                </div>
+                <div class="form-group">
+                    <label asp-for="User.PhoneNumber">Numer telefonu</label>
+                    <input asp-for="User.PhoneNumber" class="form-control" />
+                </div>
+                <div class="form-group">
+                    <label asp-for="User.EmailAddress">Adres E-Mail</label>
+                    <input asp-for="User.EmailAddress" class="form-control" />
+                </div>
+                <div class="form-group">
+                    <label asp-for="User.PasswordHash">Haslo</label>
+                    <input asp-for="User.PasswordHash" class="form-control" />
+                </div>
 
-<h2>AddUserSpedytor</h2>
-
-<form method="post" class="form-inline">
-    <div class="form-group">
-        <input asp-for="User.EmailAddress" class="form-control" />
-        <input asp-for="User.PasswordHash" class="form-control" />
+                <button type="submit" class="btn btn-default">Submit</button>
+            </form>
+        </div>
     </div>
-    <button type="submit" class="btn btn-default">Submit</button>
-</form> 
