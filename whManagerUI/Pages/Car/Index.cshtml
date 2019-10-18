@@ -10,6 +10,10 @@
     <thead>
         <tr>
             <th scope="col">Plate Number</th>
+            <th scope="col">Brand</th>
+            <th scope="col">Model</th>
+            <th scope="col">Weight</th>
+            <th scope="col">Capacity</th>
             <th scope="col" colspan="2">Action</th>
         </tr>
     </thead>
@@ -19,7 +23,11 @@
             @foreach (var item in Model.Cars)
             {
                 <tr>
-                    <td>@item.Id, @item.PlateNumber</td>
+                    <td>@item.PlateNumber</td>
+                    <td>@item.Brand</td>
+                    <td>@item.Model</td>
+                    <td>@item.Weight</td>
+                    <td>@item.Capacity</td>
                     <td><a href="/car/delete?id=@item.Id">Delete</a></td>
                     <td><a href="/car/edit?id=@item.Id">Edit</a></td>
                 </tr>

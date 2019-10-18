@@ -21,12 +21,10 @@ namespace whManagerAPI.Services
     }
     public class CompanyService : ICompanyService
     {
-        private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly WHManagerDbContext _context;
 
-        public CompanyService(IHttpContextAccessor httpContextAccessor, WHManagerDbContext context)
+        public CompanyService(WHManagerDbContext context)
         {
-            _httpContextAccessor = httpContextAccessor;
             _context = context;
         }
 
