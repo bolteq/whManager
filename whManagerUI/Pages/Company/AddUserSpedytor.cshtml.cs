@@ -21,7 +21,7 @@ namespace whManagerUI.Pages.Company
         {
             _userService = userService;
         }
-        public async Task<IActionResult> OnGet()
+        public IActionResult OnGet()
         {
             return Page();
         }

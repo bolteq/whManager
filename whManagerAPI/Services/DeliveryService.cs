@@ -20,11 +20,19 @@ namespace whManagerAPI.Services
         Task<bool> DeleteDelivery(int id);
 
     }
+    /// <summary>
+    /// Serwis odpowiedzialny za operacje na obiektach Delivery w bazie danych
+    /// </summary>
     public class DeliveryService : IDeliveryService
     {
         private readonly WHManagerDbContext _context;
         private readonly IHttpContextAccessor _httpContextAccessor;
 
+        /// <summary>
+        /// Konstruktor serwisu wstrzykujący zależności
+        /// </summary>
+        /// <param name="context">Klasa kontektu bazy danych</param>
+        /// <param name="httpContextAccessor">Interefejs HttpContextAccessor</param>
         public DeliveryService(WHManagerDbContext context, IHttpContextAccessor httpContextAccessor)
         {
             _context = context;
@@ -32,6 +40,11 @@ namespace whManagerAPI.Services
         }
 
         #region GetDelivery
+        /// <summary>
+        /// Pobiera z bazy danych obiekt Delivery o podanym ID
+        /// </summary>
+        /// <param name="id">id obiektu do zwrócenia</param>
+        /// <returns>Obiekt Delivery o podanym ID</returns>
         public async Task<Delivery> GetDelivery(int id)
         {
             bool isSpedytor = _httpContextAccessor
@@ -78,6 +91,10 @@ namespace whManagerAPI.Services
         #endregion
 
         #region GetDeliveries
+        /// <summary>
+        /// Pobiera z bazy danych obiekty typu Delivery
+        /// </summary>
+        /// <returns>Typ IQueryable obiektów Delivery</returns>
         public IQueryable<Delivery> GetDeliveries()
         {
             bool isSpedytor = _httpContextAccessor
@@ -125,6 +142,11 @@ namespace whManagerAPI.Services
         #endregion
 
         #region SetDelivery
+        /// <summary>
+        /// Aktualizuje/dodaje otrzymany obiekt typu Delivery w bazie danych
+        /// </summary>
+        /// <param name="delivery">Obiekt do dodania/aktualizacji</param>
+        /// <returns>Zaktualizowany/dodany obiekt</returns>
         public async Task<Delivery> SetDelivery(Delivery delivery)
         {
             var companyId = _httpContextAccessor

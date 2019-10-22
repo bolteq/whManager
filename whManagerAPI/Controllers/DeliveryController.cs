@@ -13,6 +13,10 @@ using whManagerAPI.Services;
 
 namespace whManagerAPI.Controllers
 {
+    /// <summary>
+    /// Klasa pośredniczy w operacjach na obiektach Delivery
+    /// Przekazuje otrzymane zapytania Http do serwisu komunikującego się z bazą danych
+    /// </summary>
     [Authorize]
     [ApiController]
     public class DeliveryController : Controller
@@ -20,6 +24,11 @@ namespace whManagerAPI.Controllers
 
 
         private readonly IDeliveryService _deliveryService;
+
+        /// <summary>
+        /// Konstruktor wstrzykujący zależności
+        /// </summary>
+        /// <param name="deliveryService">Serwis DeliveryService</param>
 
         public DeliveryController(IDeliveryService deliveryService)
         {
@@ -78,6 +87,11 @@ namespace whManagerAPI.Controllers
         #endregion
 
         #region DeleteDelivery
+        /// <summary>
+        /// Metoda odpowiadająca za przekazanie do serwisu Id obiektu Delivery do usunięcia z bazy danych
+        /// </summary>
+        /// <param name="id">Id obiektu do usunięcia</param>
+        /// <returns>ActionResult - Ok - sukces, BadRequest - niepowodzenie</returns>
         [Authorize(Roles = RoleHelper.SpedytorAdministrator)]
         [HttpDelete]
         [Route("api/[controller]")]

@@ -25,13 +25,22 @@ namespace whManagerAPI.Services
         IQueryable<User> GetUsers();
         Task<bool> DeleteUser(int id);
     }
+    /// <summary>
+    /// Klasa serwisu odpowiedzialnego za operacje na tabeli Users w bazie danych
+    /// </summary>
     public class UserService : IUserService
     {
         private readonly WHManagerDbContext _context;
         private readonly AppSettings _appSettings;
         private readonly PasswordCrypter _passwordCrypter;
         private readonly IHttpContextAccessor _httpContextAccessor;
-
+        /// <summary>
+        /// Konstruktor serwisu UserService
+        /// </summary>
+        /// <param name="context">Kontekt bazy danych</param>
+        /// <param name="appSettings">Klasa pomocnicza zawierająca ustawienia</param>
+        /// <param name="passwordCrypter">Serwis odpowiedzialny za szyfrowanie haseł</param>
+        /// <param name="httpContextAccessor">Interfejs pomocniczy służący do dostępu do HttpContextu z serwisu</param>
         public UserService(WHManagerDbContext context, IOptions<AppSettings> appSettings, PasswordCrypter passwordCrypter, IHttpContextAccessor httpContextAccessor)
         {
             _context = context;
@@ -41,6 +50,12 @@ namespace whManagerAPI.Services
         }
 
         #region Login
+        /// <summary>
+        /// Metoda odpowiedzialna za zalogowanie użytkownika o przesłanej nazwie i haśle
+        /// </summary>
+        /// <param name="username">nazwa użytkownika</param>
+        /// <param name="password">hasło</param>
+        /// <returns>Zwraca obiekt user z wygenerowanym tokenem dostępowym</returns>
         public async Task<User> Login(string username, string password)
         {
             User user = new User();
@@ -75,6 +90,11 @@ namespace whManagerAPI.Services
         }
         #endregion
         #region Register
+        /// <summary>
+        /// Metoda dodająca przesłanego użytkownika do bazy danych
+        /// </summary>
+        /// <param name="user">Użytkownik do zarejestrowania</param>
+        /// <returns></returns>
         public async Task<bool> Register(User user)
         {
             var emailValidator = new EmailAddressAttribute();
@@ -128,6 +148,11 @@ namespace whManagerAPI.Services
         }
         #endregion
         #region GetUser
+        /// <summary>
+        /// Metoda pobierająca użytkownika o podanym ID z bazy danych
+        /// </summary>
+        /// <param name="id">ID użytkownika</param>
+        /// <returns></returns>
         public async Task<User> GetUser(int id)
         {
             //Pobierz ID firmy użytkownika z kontekstu
@@ -160,10 +185,10 @@ namespace whManagerAPI.Services
                 .FirstOrDefault();
 
             //Pobierz użytkownika z bazy danych
-            var user = _context
+            var user = await _context
                 .Users
                 .Include(u => u.Company)
-                .FirstOrDefault(u => u.Id == id);
+                .FirstOrDefaultAsync(u => u.Id == id);
 
             //Jeśli wywoła spedytor, a użytkownik nie należy do jego firmy zwróc null
             if (isSpedytor && user.CompanyId != companyId) return null;
@@ -179,6 +204,10 @@ namespace whManagerAPI.Services
         }
         #endregion
         #region GetUsers
+        /// <summary>
+        /// Metoda pobierająca użytkowników z bazy danych
+        /// </summary>
+        /// <returns></returns>
         public IQueryable<User> GetUsers()
         {
             //Pobierz ID firmy użytkownika z kontekstu
@@ -219,6 +248,11 @@ namespace whManagerAPI.Services
         #endregion
 
         #region DeleteUser
+        /// <summary>
+        /// Metoda usuwająca użytkownika o podanym ID z bazy danych
+        /// </summary>
+        /// <param name="id">Id użytkownika do usunięcia z bazy danych</param>
+        /// <returns></returns>
         public async Task<bool> DeleteUser(int id)
         {
 

@@ -1,0 +1,28 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>whManagerLIB</name>
+    </assembly>
+    <members>
+        <member name="T:whManagerLIB.Models.Warehouse">
+            <summary>
+            Klasa reprezentuje Magazyn
+            </summary>
+        </member>
+        <member name="P:whManagerLIB.Models.Warehouse.WarehouseId">
+            <summary>
+            Pole danych zawierające Id magazynu
+            </summary>
+        </member>
+        <member name="P:whManagerLIB.Models.Warehouse.Name">
+            <summary>
+            Pole danych nazwy magazynu
+            </summary>
+        </member>
+        <member name="P:whManagerLIB.Models.Warehouse.Address">
+            <summary>
+            Pole danych adresu magazynu
+            </summary>
+        </member>
+    </members>
+</doc>

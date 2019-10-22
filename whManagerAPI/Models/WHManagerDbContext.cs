@@ -9,27 +9,74 @@ using whManagerLIB.Models;
 
 namespace whManagerAPI.Models
 {
+    /// <summary>
+    /// Klasa inicjalizująca bazę danych (Entity Framework Core)
+    /// </summary>
     public class WHManagerDbContext : DbContext
     {
         private readonly PasswordCrypter _passwordCrypter;
 
+        /// <summary>
+        /// Konstruktor klasy WHManagerDbContext
+        /// </summary>
+        /// <param name="options">Opcje z Startup.cs</param>
+        /// <param name="passwordCrypter">Serwis odpowiedzialny za szyfrowanie haseł</param>
         public WHManagerDbContext(DbContextOptions<WHManagerDbContext> options, PasswordCrypter passwordCrypter)
             : base(options)
         {
             _passwordCrypter = passwordCrypter;
         }
-
+        /// <summary>
+        /// Reprezentuje tabelę zawierającą obiekty typu Warehouse w bazie danych
+        /// </summary>
         public DbSet<Warehouse> Warehouses { get; set; }
+        /// <summary>
+        /// Reprezentuje tabelę zawierającą obiekty typu User w bazie danych
+        /// </summary>
         public DbSet<User> Users { get; set; }
+        /// <summary>
+        /// Reprezentuje tabelę zawierającą obiekty typu Role w bazie danych
+        /// </summary>
         public DbSet<Role> Roles { get; set; }
+        /// <summary>
+        /// Reprezentuje tabelę zawierającą obiekty typu Delivery w bazie danych
+        /// </summary>
         public DbSet<Delivery> Deliveries { get; set; }
+        /// <summary>
+        /// Reprezentuje tabelę zawierającą obiekty typu DeliveryItem w bazie danych
+        /// </summary>
         public DbSet<DeliveryItem> DeliveryItems { get; set; }
+        /// <summary>
+        /// Reprezentuje tabelę zawierającą obiekty typu DeliveryItemType w bazie danych
+        /// </summary>
         public DbSet<DeliveryItemType> DeliveryItemTypes { get; set; }
+
+        /// <summary>
+        /// Reprezentuje tabelę zawierającą obiekty typu Unloading w bazie danych
+        /// </summary>
         public DbSet<Unloading> Unloadings { get; set; }
+
+        /// <summary>
+        /// Reprezentuje tabelę zawierającą obiekty typu Car w bazie danych
+        /// </summary>
         public DbSet<Car> Cars { get; set; }
+
+        /// <summary>
+        /// Reprezentuje tabelę zawierającą obiekty typu Company w bazie danych
+        /// </summary>
         public DbSet<Company> Companies { get; set; }
+
+        /// <summary>
+        /// Reprezentuje tabelę zawierającą obiekty typu Trailer w bazie danych
+        /// </summary>
         public DbSet<Trailer> Trailers { get; set; }
 
+
+        /// <summary>
+        /// Nadpisuje bazową funkcję EFCore tworzącą bazę danych,
+        /// dodaje przykładowe dane.
+        /// </summary>
+        /// <param name="builder"></param>
         protected override void OnModelCreating(ModelBuilder builder)
         {
 

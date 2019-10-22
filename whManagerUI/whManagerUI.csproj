@@ -4,6 +4,10 @@
     <TargetFramework>netcoreapp2.1</TargetFramework>
   </PropertyGroup>
 
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <DocumentationFile>C:\Users\Dawid\Source\Repos\whmanagerapi\whManagerUI\whManagerUI.xml</DocumentationFile>
+  </PropertyGroup>
+
   <ItemGroup>
     <PackageReference Include="Bootstrap.v3.Datetimepicker.CSS" Version="4.17.45" />
     <PackageReference Include="Microsoft.AspNetCore.App" />

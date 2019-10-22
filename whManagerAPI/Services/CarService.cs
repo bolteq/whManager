@@ -19,11 +19,18 @@ namespace whManagerAPI.Services
         Task<Car> AddCar(Car car);
         Task<bool> DeleteCar(int id);
     }
+    /// <summary>
+    /// Serwis odpowiedzialny za operacje na obiektach typu Car w bazie danych
+    /// </summary>
     public class CarService : ICarService
     {
         private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly WHManagerDbContext _context;
-
+        /// <summary>
+        /// Konstruktor serwisu wstrzykujący zależności
+        /// </summary>
+        /// <param name="httpContextAccessor">Interfejs dostępu do HttpContextu</param>
+        /// <param name="context">Klasa kontekstu bazy danych</param>
         public CarService(IHttpContextAccessor httpContextAccessor, WHManagerDbContext context)
         {
             _httpContextAccessor = httpContextAccessor;
@@ -32,6 +39,11 @@ namespace whManagerAPI.Services
 
         #region GetCar
 
+        /// <summary>
+        /// Metoda pobierająca z bazy danych obiekt Car o podanym ID
+        /// </summary>
+        /// <param name="id">id obiektu</param>
+        /// <returns>Pobrany obiekt</returns>
         public async Task<Car> GetCar(int id)
         {
             //Sprawdź, czy użytkownik jest spedytorem
@@ -66,6 +78,10 @@ namespace whManagerAPI.Services
         #endregion
 
         #region GetCars
+        /// <summary>
+        /// Metoda pobierająca z bazy danych obiekty Car
+        /// </summary>
+        /// <returns>Listę obiektów Car</returns>
         public async Task<IList<Car>> GetCars()
         {
             //Sprawdź, czy użytkownik jest spedytorem
@@ -99,6 +115,11 @@ namespace whManagerAPI.Services
         #endregion
 
         #region AddCar
+        /// <summary>
+        /// Metoda dodająca/aktualizująca otrzymany obiekt Car do bazy danych
+        /// </summary>
+        /// <param name="car">obiekt do dodania/aktualizacji</param>
+        /// <returns>Zaktualizowany/dodany obiekt</returns>
         public async Task<Car> AddCar(Car car)
         {
             var bExists = _context
@@ -143,7 +164,11 @@ namespace whManagerAPI.Services
         #endregion
 
         #region DeleteCar
-
+        /// <summary>
+        /// Metoda usuwająca obiekt Car z bazy danych
+        /// </summary>
+        /// <param name="id">Id obiektu do usunięcia</param>
+        /// <returns>true - sukces, false - niepowodzenie</returns>
         public async Task<bool> DeleteCar(int id)
         {
 

@@ -13,16 +13,30 @@ using whManagerAPI.Services;
 
 namespace whManagerAPI.Controllers
 {
+
+    /// <summary>
+    /// Kontroler odpowiedzialny za obsługę zapytań HTTP dotyczących obiektów Company
+    /// </summary>
     [Authorize]
     [ApiController]
     public class CompanyController : Controller
     {
         private readonly ICompanyService _companyService;
+
+        /// <summary>
+        /// Konstruktor kontrolera wstrzykujący serwis CompanyService do komunikacji z bazą danych
+        /// </summary>
+        /// <param name="companyService"></param>
         public CompanyController(ICompanyService companyService)
         {
             _companyService = companyService;
         }
 
+        /// <summary>
+        /// Metoda HttpGet zwracająca obiekt Company o podanym ID
+        /// </summary>
+        /// <param name="id">Id</param>
+        /// <returns>Obiekt company z bazy danych o podanym ID</returns>
         [Authorize(Roles = RoleHelper.Administrator)]
         [HttpGet]
         [Route("api/[controller]/{id}")]
@@ -34,6 +48,10 @@ namespace whManagerAPI.Controllers
             return Ok(company);
         }
 
+        /// <summary>
+        /// Metoda HttpGet zwracająca listę obiektów Company
+        /// </summary>
+        /// <returns>Lista firm</returns>
         [Authorize(Roles = RoleHelper.Administrator)]
         [HttpGet]
         [Route("api/[controller]")]
@@ -44,6 +62,11 @@ namespace whManagerAPI.Controllers
             return Ok(companies);
         }
 
+        /// <summary>
+        /// Metoda HttpPost przesyłająca do serwisu otrzymany obiekt Company celem aktualizacji/dodania
+        /// </summary>
+        /// <param name="company">Obiekt do aktualizacji/dodania</param>
+        /// <returns>BadRequest - niepowodzenie, Ok - powodzenie</returns>
         [Authorize(Roles = RoleHelper.Administrator)]
         [HttpPost]
         [Route("api/[controller]")]
@@ -54,11 +77,15 @@ namespace whManagerAPI.Controllers
                 return BadRequest();
             }
 
-            var newCompany = _companyService.AddCompany(company);
+            var newCompany = await _companyService.AddCompany(company);
 
             return Ok(newCompany);
         }
-
+        /// <summary>
+        /// Metoda przesyłająca do serwisu otrzymane id w celu usunięcia obiektu z bazy danych
+        /// </summary>
+        /// <param name="id">Id obiektu do usunięcia</param>
+        /// <returns>BadRequest - niepowodzenie, Ok - powodzenie</returns>
         [Authorize(Roles = RoleHelper.Administrator)]
         [HttpDelete]
         [Route("api/[controller]")]

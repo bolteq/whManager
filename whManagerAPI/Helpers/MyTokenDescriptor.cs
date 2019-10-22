@@ -10,12 +10,19 @@ using whManagerLIB.Models;
 
 namespace whManagerAPI.Helpers
 {
+    /// <summary>
+    /// Klasa generująca token dla użytkownika API
+    /// </summary>
     public class MyTokenDescriptor : SecurityTokenDescriptor
     {
         private DateTime tokenExpiryTime = DateTime.UtcNow.AddHours(1);
         private List<Claim> Claims { get; set; }
 
-
+        /// <summary>
+        /// Konstruktor klasy MyTokenDescriptor
+        /// </summary>
+        /// <param name="appSettings">Ustawienia z appsettings.json</param>
+        /// <param name="user">Użytkownik dla którego generowany jest token</param>
         public MyTokenDescriptor(AppSettings appSettings, User user)
         {
             Byte[] key = Encoding.ASCII.GetBytes(appSettings.Secret);

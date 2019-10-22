@@ -14,20 +14,30 @@ using System.Security.Claims;
 
 namespace whManagerAPI.Controllers
 {
+    /// <summary>
+    /// Kontroler API odpowiadający za operacje na użytkownikach
+    /// </summary>
     [Authorize]
     [ApiController]
     public class UserController : Controller
     {
-        private readonly WHManagerDbContext _context;
         private readonly IUserService _userService;
 
-        public UserController(IUserService userService, WHManagerDbContext context)
+        /// <summary>
+        /// Konstruktor wstrzykujący serwis UserService do komunikacji z bazą danych
+        /// </summary>
+        /// <param name="userService"></param>
+        public UserController(IUserService userService)
         {
             _userService = userService;
-            _context = context;
         }
 
         #region GetUser
+        /// <summary>
+        /// Metoda pobierająca użytkownika o podanym ID
+        /// </summary>
+        /// <param name="id">Id użytkownika</param>
+        /// <returns>Wynik Ok oraz dane o użytkowniku jeśli znaleziono użytkownika, BadRequest jeśli nie znaleziono</returns>
         [Authorize]
         [HttpGet]
         [Route("api/[controller]/{id}")]
@@ -49,6 +59,10 @@ namespace whManagerAPI.Controllers
         #endregion
 
         #region GetUsers
+        /// <summary>
+        /// Metoda pobierająca użytkowników z bazy danych
+        /// </summary>
+        /// <returns>Ok z listą użytkowników jeśli udało się pobrać, BadRequest jeśli nie</returns>
         [Authorize(Roles = RoleHelper.SpedytorAdministrator)]
         [HttpGet]
         [Route("api/[controller]")]
@@ -69,6 +83,11 @@ namespace whManagerAPI.Controllers
 
         #endregion
         #region Login
+        /// <summary>
+        /// Metoda HttpPost, przekazuje do serwisu otrzymanego użytkownika celem zalogowania
+        /// </summary>
+        /// <param name="userData">Użytkownik do zalogowania</param>
+        /// <returns>Jeśli się powiedzie, zwraca użytkownika (serwis dodaje token), jeśli nie, zwraca BadRequest</returns>
         [AllowAnonymous]
         [HttpPost]
         [Route("api/[controller]/login")]
@@ -86,6 +105,11 @@ namespace whManagerAPI.Controllers
         #endregion Login
 
         #region Register
+        /// <summary>
+        /// Metoda HttpPost przekazująca do serwisu otrzymanego użytkownika w celu dodania do bazy danych
+        /// </summary>
+        /// <param name="user">Użytkownik do rejestracji</param>
+        /// <returns>Ok jeśli udane, BadRequest jeśli nie udane</returns>
         [Authorize(Roles = "Administrator, Spedytor")]
         [HttpPost]
         [Route("api/[controller]/register")]
@@ -112,6 +136,11 @@ namespace whManagerAPI.Controllers
         #endregion
 
         #region DeleteUser
+        /// <summary>
+        /// Metoda Delete przesyłająca do serwisu id użytkownika do usunięcia
+        /// </summary>
+        /// <param name="id">ID użytkownika do usunięcia</param>
+        /// <returns>Ok jeśli użytkownik został usunięty, BadRequest jeśli nie</returns>
         [Authorize(Roles = RoleHelper.SpedytorAdministrator)]
         [HttpDelete]
         [Route("api/[controller]")]
